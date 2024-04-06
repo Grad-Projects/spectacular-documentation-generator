@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DocumentGeneration.BFF.Core.Operations
+namespace DocumentGeneration.BFF.Core.Models
 {
-    public delegate String AnalyzeCode(string base64String);
+    internal class documentClass
+    {
+    }
 }

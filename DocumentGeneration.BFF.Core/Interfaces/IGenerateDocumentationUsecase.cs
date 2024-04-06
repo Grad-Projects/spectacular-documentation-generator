@@ -8,6 +8,6 @@ namespace DocumentGeneration.BFF.Core.Interfaces
 {
     public interface IGenerateDocumentationUsecase
     {
-        public string Analyze(byte[] bytes);
+        public string Analyze(string base64String);
     }
 }

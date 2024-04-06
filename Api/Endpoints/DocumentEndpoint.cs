@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using DocumentGeneration.BFF.Core.Interfaces;
 using Microsoft.Extensions.Logging;
+using System.IO;
 
 namespace Api.Endpoints
 {
@@ -9,8 +10,8 @@ namespace Api.Endpoints
         public static IEndpointRouteBuilder AddDocumentEndpoint(this IEndpointRouteBuilder endpoints)
         {
 
-            endpoints.MapPut("generate/documentation", (
-                   [FromBody] byte[]? document,
+            endpoints.MapGet("generate/documentation", (
+                   [FromQuery] string? document,
                    [FromServices] IGenerateDocumentationUsecase _generateDocumentation
                     )
                => _generateDocumentation.Analyze(document)
