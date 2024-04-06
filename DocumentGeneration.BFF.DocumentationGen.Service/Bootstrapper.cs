@@ -7,7 +7,7 @@ namespace DocumentGeneration.BFF.DocumentationGen.Service
 {
     public static class Bootstrapper
     {
-        public static IServiceCollection AddStudentService(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddDocGenService(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<CodeAnalyzerService>();
             services.AddScoped<AnalyzeCode>(s => s.GetRequiredService<CodeAnalyzerService>().Analyze);

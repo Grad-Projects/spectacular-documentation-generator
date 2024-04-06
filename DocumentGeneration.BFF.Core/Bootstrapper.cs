@@ -15,6 +15,7 @@ namespace DocumentGeneration.BFF.Core
         public static IServiceCollection AddCoreServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IGenerateDocumentationUsecase, GenerateDocumentationUsecase>();
+            services.AddScoped<ITestCase, loggingTestUsecase>();
             return services;
         }
     }
