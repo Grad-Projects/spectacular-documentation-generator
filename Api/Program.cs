@@ -1,25 +1,35 @@
-var builder = WebApplication.CreateBuilder(args);
+using Api.Configuration;
+using Api.Configuration.Logging;
+using Microsoft.Extensions.Hosting;
+using Serilog;
 
-// Add services to the container.
+var logBuilder = new ConfigurationBuilder();
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(logBuilder.Build())
+    .CreateBootstrapLogger();
 
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+try
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    Log.Information("Starting Web Host");
+    var builder = WebApplication.CreateBuilder(args);
+
+    logBuilder.AddJsonFile("appsettings.json", true, true);
+    builder.Services.ConfigureServices(builder.Configuration);
+
+    builder.Host.ConfigureLogging();
+
+    var app = builder.Build();
+    app.ConfigureApp(app.Environment);
+    app.Run();
+
 }
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Host terminated unexpectedly");
+}
+finally
+{
+    Log.Information("Host shut down unexpectedly");
+    Log.CloseAndFlush();
+}
