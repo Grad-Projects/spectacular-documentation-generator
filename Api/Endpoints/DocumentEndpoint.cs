@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using DocumentGeneration.BFF.Core.Interfaces;
 
 namespace Api.Endpoints
 {
@@ -7,10 +8,11 @@ namespace Api.Endpoints
         public static IEndpointRouteBuilder AddDocumentEndpoint(this IEndpointRouteBuilder endpoints)
         {
 
-            endpoints.MapGet("generate/documentation", (
-                   [FromBody] byte[] document
+            endpoints.MapPost("generate/documentation", (
+                   [FromBody] byte[] document,
+                   [FromServices] IGenerateDocumentationUsecase _generateDocumentation
                     )
-               => () => "hello world"
+               => _generateDocumentation.Analyze(document)
             )
            .Produces(StatusCodes.Status200OK, typeof(string))
            .Produces(StatusCodes.Status500InternalServerError)
