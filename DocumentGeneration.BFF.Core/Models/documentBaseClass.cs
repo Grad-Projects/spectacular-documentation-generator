@@ -12,13 +12,13 @@ namespace DocumentGeneration.BFF.Core.Models
         public string Type { get; set; }
         public string AccessModifier { get; set; }
         
-        public List<documentFeildClass> Feilds { get; set; } = new List<documentFeildClass>();
+        public List<documentFeildClass> Fields { get; set; } = new List<documentFeildClass>();
 
         public List<documentMethodClass> Methods { get; set; } = new List<documentMethodClass>();
 
-        public List<(string name, string type)> inheritsFrom { get; set; } = new List<(string name, string type)>();
+        public List<(string name, string type)> InheritsFrom { get; set; } = new List<(string name, string type)>();
 
-        public List<string> dependency { get; set; } = new List<string>();
+        public List<string> Dependency { get; set; } = new List<string>();
 
     }
 }

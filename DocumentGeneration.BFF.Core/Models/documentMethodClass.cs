@@ -10,10 +10,10 @@ namespace DocumentGeneration.BFF.Core.Models
     {
         public string MethodName { get; set; }
 
-        public string type { get; set; }
+        public string Type { get; set; }
 
-        public string accessModifier { get; set; }
-        public List<(string type, string name)> parameters { get; set; } = new List<(string type, string name)>();
+        public string AccessModifier { get; set; }
+        public List<(string type, string name)> Parameters { get; set; } = new List<(string type, string name)>();
 
 
     }

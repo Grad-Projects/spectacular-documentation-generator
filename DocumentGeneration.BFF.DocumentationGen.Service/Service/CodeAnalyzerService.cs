@@ -44,15 +44,15 @@ namespace DocumentGeneration.BFF.DocumentationGen.Service.Service
 
                 //inheriteance info
                 var inheritanceList = getInheritanceInfo(syntaxTree);
-                codeInfo.inheritsFrom = inheritanceList;
+                codeInfo.InheritsFrom = inheritanceList;
 
                 //dependency info
                 var dependency = GetDependencies(syntaxTree);
-                codeInfo.dependency = dependency;
+                codeInfo.Dependency = dependency;
 
                 //feild info
                 var feildList = getFeildInfo(syntaxTree);
-                codeInfo.Feilds = feildList;
+                codeInfo.Fields = feildList;
 
                 //method info
                 var methodList = getMethodInfo(syntaxTree);
@@ -150,9 +150,9 @@ namespace DocumentGeneration.BFF.DocumentationGen.Service.Service
                 foreach (var variable in node.Declaration.Variables)
                 {
                     documentFeildClass currentFeild = new documentFeildClass();
-                    currentFeild.feildName = variable.Identifier.Text;
-                    currentFeild.type = node.Declaration.Type.ToString();
-                    currentFeild.accessModifier = node.Modifiers.ToString();
+                    currentFeild.FielddName = variable.Identifier.Text;
+                    currentFeild.Type = node.Declaration.Type.ToString();
+                    currentFeild.AccessModifier = node.Modifiers.ToString();
 
                     workingList.Add(currentFeild);
                 }
@@ -168,13 +168,13 @@ namespace DocumentGeneration.BFF.DocumentationGen.Service.Service
             {
                 documentMethodClass currentMethod = new documentMethodClass();
                 currentMethod.MethodName = node.Identifier.Text;
-                currentMethod.type = node.ReturnType.ToString();
-                currentMethod.accessModifier = node.Modifiers.ToString();
+                currentMethod.Type = node.ReturnType.ToString();
+                currentMethod.AccessModifier = node.Modifiers.ToString();
 
                 var parameters = node.ParameterList.Parameters;
                 foreach (var parameter in parameters)
                 {
-                    currentMethod.parameters.Add((parameter.Type.ToString(), parameter.Identifier.Text));
+                    currentMethod.Parameters.Add((parameter.Type.ToString(), parameter.Identifier.Text));
                 }
 
                 workingList.Add(currentMethod);

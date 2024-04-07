@@ -8,8 +8,8 @@ namespace DocumentGeneration.BFF.Core.Models
 {
     public class documentFeildClass
     {
-        public string feildName { get; set; }
-        public string type { get; set; }
-        public string accessModifier { get; set; }
+        public string FielddName { get; set; }
+        public string Type { get; set; }
+        public string AccessModifier { get; set; }
     }
 }
