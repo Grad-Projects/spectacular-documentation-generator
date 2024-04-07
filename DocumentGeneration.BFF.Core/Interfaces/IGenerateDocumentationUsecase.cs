@@ -9,6 +9,6 @@ namespace DocumentGeneration.BFF.Core.Interfaces
 {
     public interface IGenerateDocumentationUsecase
     {
-        public string GenDocumentation(string base64String);
+        public List<string> GenDocumentation(List<string> files);
     }
 }

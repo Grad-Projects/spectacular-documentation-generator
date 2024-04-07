@@ -11,7 +11,7 @@ namespace Api.Endpoints
         {
 
             endpoints.MapGet("generate/documentation", (
-                   [FromQuery] string? document,
+                   [FromBody] List<string> document,
                    [FromServices] IGenerateDocumentationUsecase _generateDocumentation
                     )
                => _generateDocumentation.GenDocumentation(document)

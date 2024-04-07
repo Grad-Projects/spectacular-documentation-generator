@@ -34,43 +34,57 @@ namespace DocumentGeneration.BFF.HtmlConverter.Service.Service
             htmlBuilder.AppendLine("<p>Access Modifier: " + fileInfo.AccessModifier + "</p>");
 
             // Add the fields information
-            htmlBuilder.AppendLine("<h2>Fields</h2>");
-            htmlBuilder.AppendLine("<table>");
-            htmlBuilder.AppendLine("<tr><th>Name</th><th>Type</th><th>Access Modifier</th></tr>");
-            foreach (var field in fileInfo.Fields)
+            if(fileInfo.Fields.Count > 0)
             {
-                htmlBuilder.AppendLine("<tr><td>" + field.FielddName + "</td><td>" + field.Type + "</td><td>" + field.AccessModifier + "</td></tr>");
+                htmlBuilder.AppendLine("<h2>Fields</h2>");
+                htmlBuilder.AppendLine("<table>");
+                htmlBuilder.AppendLine("<tr><th>Name</th><th>Type</th><th>Access Modifier</th></tr>");
+                foreach (var field in fileInfo.Fields)
+                {
+                    htmlBuilder.AppendLine("<tr><td>" + field.FielddName + "</td><td>" + field.Type + "</td><td>" + field.AccessModifier + "</td></tr>");
+                }
+                htmlBuilder.AppendLine("</table>");
             }
-            htmlBuilder.AppendLine("</table>");
+            
 
             // Add the methods information
-            htmlBuilder.AppendLine("<h2>Methods</h2>");
-            htmlBuilder.AppendLine("<table>");
-            htmlBuilder.AppendLine("<tr><th>Name</th><th>Type</th><th>Access Modifier</th><th>Parameters</th></tr>");
-            foreach (var method in fileInfo.Methods)
+            if(fileInfo.Methods.Count > 0)
             {
-                htmlBuilder.AppendLine("<tr><td>" + method.MethodName + "</td><td>" + method.Type + "</td><td>" + method.AccessModifier + "</td><td>" + string.Join(", ", method.Parameters.Select(p => p.type + " " + p.name)) + "</td></tr>");
+                htmlBuilder.AppendLine("<h2>Methods</h2>");
+                htmlBuilder.AppendLine("<table>");
+                htmlBuilder.AppendLine("<tr><th>Name</th><th>Type</th><th>Access Modifier</th><th>Parameters</th></tr>");
+                foreach (var method in fileInfo.Methods)
+                {
+                    htmlBuilder.AppendLine("<tr><td>" + method.MethodName + "</td><td>" + method.Type + "</td><td>" + method.AccessModifier + "</td><td>" + string.Join(", ", method.Parameters.Select(p => p.type + " " + p.name)) + "</td></tr>");
+                }
+                htmlBuilder.AppendLine("</table>");
             }
-            htmlBuilder.AppendLine("</table>");
+            
 
             // Add the inheritance information
-            htmlBuilder.AppendLine("<h2>Inherits From</h2>");
-            htmlBuilder.AppendLine("<ul>");
-            foreach (var inheritance in fileInfo.InheritsFrom)
+            if(fileInfo.InheritsFrom.Count > 0)
             {
-                htmlBuilder.AppendLine("<li>" + inheritance.name + " (" + inheritance.type + ")</li>");
+                htmlBuilder.AppendLine("<h2>Inherits From</h2>");
+                htmlBuilder.AppendLine("<ul>");
+                foreach (var inheritance in fileInfo.InheritsFrom)
+                {
+                    htmlBuilder.AppendLine("<li>" + inheritance.name + " (" + inheritance.type + ")</li>");
+                }
+                htmlBuilder.AppendLine("</ul>");
             }
-            htmlBuilder.AppendLine("</ul>");
 
             // Add the dependency information
-            htmlBuilder.AppendLine("<h2>Dependencies</h2>");
-            htmlBuilder.AppendLine("<ul>");
-            foreach (var dependency in fileInfo.Dependency)
+            if (fileInfo.Dependency.Count > 0)
             {
-                htmlBuilder.AppendLine("<li>" + dependency + "</li>");
+                htmlBuilder.AppendLine("<h2>Dependencies</h2>");
+                htmlBuilder.AppendLine("<ul>");
+                foreach (var dependency in fileInfo.Dependency)
+                {
+                    htmlBuilder.AppendLine("<li>" + dependency + "</li>");
+                }
+                htmlBuilder.AppendLine("</ul>");
             }
-            htmlBuilder.AppendLine("</ul>");
-
+            
             // End the HTML document
             htmlBuilder.AppendLine("</body>");
             htmlBuilder.AppendLine("</html>");

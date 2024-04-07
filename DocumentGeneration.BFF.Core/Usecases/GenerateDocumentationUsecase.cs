@@ -38,11 +38,21 @@ namespace DocumentGeneration.BFF.Core.Usecases
             return html;
         }
 
-        public string GenDocumentation(string base64String)
+        public List<string> GenDocumentation(List<string> files)
         {
-            var info = Analyze(base64String);
-            var html = ToHtml(info);
-            return html;
+            List<documentBaseClass> fileInfo = new List<documentBaseClass>();
+            foreach (var file in files)
+            {
+                fileInfo.Add(Analyze(file));
+            }
+
+            List<string> htmlForFiles = new List<string>();
+            foreach (var file in fileInfo)
+            {
+                htmlForFiles.Add(ToHtml(file));
+            }
+            
+            return htmlForFiles;
         }
 
     }
