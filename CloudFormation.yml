@@ -17,6 +17,9 @@ Parameters:
     Description: Master user password for the RDS instance
     Type: String
     NoEcho: true  # Hides the password during stack creation/update
+  GitHubRepository:
+    Description: GitHub repository URL where the application code resides
+    Type: String
 
 Resources:
   MyVPC:
@@ -121,15 +124,6 @@ Resources:
     Properties:
       Description: ".NET C# Elastic Beanstalk Application"
 
-  ApplicationVersion:
-  Type: AWS::ElasticBeanstalk::ApplicationVersion
-  Properties:
-    ApplicationName: !Ref DotNetCSharpApplication
-    Description: AWS ElasticBeanstalk Sample Application Version
-    SourceBundle:
-      S3Bucket: 'elasticbeanstalk-us-west-1-123456789012'  # Dummy bucket
-      S3Key: 'main/archive/spectacular-documentation-generator.zip'
-
   DotNetCSharpApplicationEnvironment:
     Type: AWS::ElasticBeanstalk::Environment
     Properties:
@@ -137,6 +131,11 @@ Resources:
       Description: ElasticBeanstalk Environment
       EnvironmentName: !Sub ${AWS::StackName}-DotNetCSharp
       TemplateName: !Ref ConfigurationTemplate
+      OptionSettings:
+        - Namespace: aws:elasticbeanstalk:application:environment
+          OptionName: GITHUB_REPO_URL
+          Value: !Ref GitHubRepository
+        # Add other environment options as needed
 
   ConfigurationTemplate:
     Type: AWS::ElasticBeanstalk::ConfigurationTemplate
