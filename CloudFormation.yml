@@ -1,0 +1,203 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Deploy .NET C# Application with PostgreSQL RDS on EC2
+
+Parameters:
+  VpcCIDR:
+    Type: String
+    Default: '10.0.0.0/16'
+    Description: CIDR block for the VPC
+  KeyName:
+    Description: Name of an existing EC2 keypair to enable SSH access to the instance.
+    Type: AWS::EC2::KeyPair::KeyName
+    ConstraintDescription: must be the name of an existing EC2 keypair.
+  DBMasterUsername:
+    Description: Master username for the RDS instance
+    Type: String
+  DBMasterUserPassword:
+    Description: Master user password for the RDS instance
+    Type: String
+    NoEcho: true  # Hides the password during stack creation/update
+
+Resources:
+  MyVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VpcCIDR
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+
+  PublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MyVPC
+      CidrBlock: '10.0.1.0/24'
+      MapPublicIpOnLaunch: true
+      AvailabilityZone: 'eu-west-1a'
+
+  PrivateSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MyVPC
+      CidrBlock: '10.0.2.0/24'
+      AvailabilityZone: 'eu-west-1b'
+
+  MyDBSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: Subnet group for RDS
+      SubnetIds:
+        - !Ref PublicSubnet
+        - !Ref PrivateSubnet
+
+  MySecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow traffic to RDS instance
+      VpcId: !Ref MyVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 5432  # PostgreSQL default port
+          ToPort: 5432
+          CidrIp: 0.0.0.0/0
+
+  ElasticBeanstalkSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: ElasticBeanstalkSecurityGroup
+      GroupDescription: Security Group for all ElasticBeanstalk Environments
+      VpcId: !Ref MyVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: "80"
+          ToPort: "80"
+          CidrIp: 0.0.0.0/0
+
+  MyInternetGateway:
+    Type: AWS::EC2::InternetGateway
+
+  MyVPCGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref MyVPC
+      InternetGatewayId: !Ref MyInternetGateway
+
+  MyRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref MyVPC
+
+  MyRoute:
+    Type: AWS::EC2::Route
+    DependsOn: MyVPCGatewayAttachment
+    Properties:
+      RouteTableId: !Ref MyRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref MyInternetGateway
+
+  MySubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet
+      RouteTableId: !Ref MyRouteTable
+
+  MyDBInstance:
+    Type: AWS::RDS::DBInstance
+    DeletionPolicy: Snapshot
+    Properties:
+      PubliclyAccessible: true
+      AllocatedStorage: 20
+      DBInstanceClass: db.t3.micro
+      Engine: postgres
+      EngineVersion: 13.9
+      DBInstanceIdentifier: MyDBInstance
+      MasterUsername: !Ref DBMasterUsername
+      MasterUserPassword: !Ref DBMasterUserPassword
+      DBSubnetGroupName: !Ref MyDBSubnetGroup
+      VPCSecurityGroups:
+        - !Ref MySecurityGroup
+
+  DotNetCSharpApplication:
+    Type: AWS::ElasticBeanstalk::Application
+    Properties:
+      Description: ".NET C# Elastic Beanstalk Application"
+
+  ApplicationVersion:
+    Type: AWS::ElasticBeanstalk::ApplicationVersion
+    Properties:
+      ApplicationName: !Ref DotNetCSharpApplication
+      Description: AWS ElasticBeanstalk Sample Application Version
+      SourceBundle:
+        S3Bucket: dotnet-csharp-bucket
+        S3Key: dotnet-app.zip
+
+  DotNetCSharpApplicationEnvironment:
+    Type: AWS::ElasticBeanstalk::Environment
+    Properties:
+      ApplicationName: !Ref DotNetCSharpApplication
+      Description: ElasticBeanstalk Environment
+      EnvironmentName: !Sub ${AWS::StackName}-DotNetCSharp
+      TemplateName: !Ref ConfigurationTemplate
+
+  ConfigurationTemplate:
+    Type: AWS::ElasticBeanstalk::ConfigurationTemplate
+    Properties:
+      ApplicationName: !Ref DotNetCSharpApplication
+      Description: AWS ElasticBeanstalk .NET C# Configuration Template
+      OptionSettings:
+        - Namespace: aws:autoscaling:asg
+          OptionName: MinSize
+          Value: '1'
+        - Namespace: aws:autoscaling:asg
+          OptionName: MaxSize
+          Value: '1'
+        - Namespace: aws:elasticbeanstalk:environment
+          OptionName: EnvironmentType
+          Value: SingleInstance 
+        - Namespace: aws:autoscaling:launchconfiguration
+          OptionName: IamInstanceProfile
+          Value: !Ref SpectacularDocumentationGeneratorInstanceProfile
+        - Namespace: aws:ec2:vpc
+          OptionName: VPCId
+          Value: !Ref MyVPC
+        - Namespace: aws:ec2:vpc
+          OptionName: Subnets
+          Value: !Ref PublicSubnet
+        - Namespace: aws:autoscaling:launchconfiguration
+          OptionName: SecurityGroups
+          Value: !Ref ElasticBeanstalkSecurityGroup
+        - Namespace: aws:ec2:vpc
+          OptionName: AssociatePublicIpAddress
+          Value: true
+      SolutionStackName: "64bit Amazon Linux 2 v5.4.0 running .NET Core"
+
+  SpectacularDocumentationGeneratorInstanceRole:
+    Type: AWS::IAM::Role
+    Properties: 
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Description: Beanstalk EC2 role
+      ManagedPolicyArns: 
+        - arn:aws:iam::aws:policy/AWSElasticBeanstalkWebTier
+        - arn:aws:iam::aws:policy/AWSElasticBeanstalkMulticontainerDocker
+        - arn:aws:iam::aws:policy/AWSElasticBeanstalkWorkerTier
+
+  SpectacularDocumentationGeneratorInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties: 
+      Roles:
+        - !Ref SpectacularDocumentationGeneratorInstanceRole
+
+Outputs:
+  BeanstalkEnvironmentDomain:
+    Description: "Elastic Beanstalk Environment Domain"
+    Value: !GetAtt DotNetCSharpApplicationEnvironment.EndpointURL
+  RDSInstanceEndpoint:
+    Description: Endpoint of the PostgreSQL RDS instance
+    Value: !GetAtt MyDBInstance.Endpoint.Address
