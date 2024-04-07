@@ -1,4 +1,5 @@
 ﻿using DocumentGeneration.BFF.Core.Interfaces;
+using DocumentGeneration.BFF.Core.Models;
 using DocumentGeneration.BFF.Core.Operations;
 using Microsoft.Extensions.Logging;
 using System;
@@ -20,11 +21,12 @@ namespace DocumentGeneration.BFF.Core.Usecases
             _logger = logger;
         }
 
-        string IGenerateDocumentationUsecase.Analyze(string base64String)
+        documentBaseClass IGenerateDocumentationUsecase.Analyze(string base64String)
         {
-            var result = _analyze(base64String);
+            documentBaseClass result = _analyze(base64String);
 
-            _logger.LogInformation(result);
+            _logger.LogInformation(result.Methods[0].parameters[0].ToString());
+
             return result;
         }
     }

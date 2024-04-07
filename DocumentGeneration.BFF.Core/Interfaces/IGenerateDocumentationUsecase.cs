@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentGeneration.BFF.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace DocumentGeneration.BFF.Core.Interfaces
 {
     public interface IGenerateDocumentationUsecase
     {
-        public string Analyze(string base64String);
+        public documentBaseClass Analyze(string base64String);
     }
 }
