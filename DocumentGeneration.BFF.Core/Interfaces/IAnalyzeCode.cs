@@ -5,7 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DocumentGeneration.BFF.Core.Operations
+namespace DocumentGeneration.BFF.Core.Interfaces
 {
-    public delegate string GenerateDocumentation(string base64String);
+    public interface IAnalyzeCode
+    {
+        public documentBaseClass Analyze(string base64String);
+    }
 }

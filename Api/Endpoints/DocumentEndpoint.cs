@@ -14,7 +14,7 @@ namespace Api.Endpoints
                    [FromQuery] string? document,
                    [FromServices] IGenerateDocumentationUsecase _generateDocumentation
                     )
-               => _generateDocumentation.Analyze(document)
+               => _generateDocumentation.GenDocumentation(document)
             )
            .Produces(StatusCodes.Status200OK, typeof(string))
            .Produces(StatusCodes.Status500InternalServerError)

@@ -1,6 +1,7 @@
 ﻿using Api.Configuration.Swagger;
 using DocumentGeneration.BFF.Core;
 using DocumentGeneration.BFF.DocumentationGen.Service;
+using DocumentGeneration.BFF.HtmlConverter.Service;
 
 namespace Api.Configuration
 {
@@ -10,6 +11,7 @@ namespace Api.Configuration
         {
             services.AddConfigurationServices(configuration)
             .AddDocGenService(configuration)
+            .AddHtmlConverterService(configuration)
             .AddCoreServices(configuration);
 
             return services;

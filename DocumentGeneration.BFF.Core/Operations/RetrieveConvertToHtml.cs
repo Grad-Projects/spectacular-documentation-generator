@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 
 namespace DocumentGeneration.BFF.Core.Operations
 {
-    public delegate string GenerateDocumentation(string base64String);
+    public delegate string ConvertToHtml(documentBaseClass fileInfo);
 }

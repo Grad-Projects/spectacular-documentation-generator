@@ -16,6 +16,8 @@ namespace DocumentGeneration.BFF.Core
         {
             services.AddScoped<IGenerateDocumentationUsecase, GenerateDocumentationUsecase>();
             services.AddScoped<ITestCase, loggingTestUsecase>();
+            services.AddScoped<IConvertToHtmlUsecase, GenerateDocumentationUsecase>();
+            services.AddScoped<IAnalyzeCode, GenerateDocumentationUsecase>();
             return services;
         }
     }

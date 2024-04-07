@@ -5,9 +5,11 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocumentGeneration.BFF.API", "DocumentGeneration.BFF.API.csproj", "{D313B989-B8A2-495A-9204-CAE37616E28D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentGeneration.BFF.Core", "..\DocumentGeneration.BFF.Core\DocumentGeneration.BFF.Core.csproj", "{E0FB6270-74FE-4D9D-968F-A62A51A52D39}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocumentGeneration.BFF.Core", "..\DocumentGeneration.BFF.Core\DocumentGeneration.BFF.Core.csproj", "{E0FB6270-74FE-4D9D-968F-A62A51A52D39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentGeneration.BFF.DocumentationGen.Service", "..\DocumentGeneration.BFF.DocumentationGen.Service\DocumentGeneration.BFF.DocumentationGen.Service.csproj", "{930318A0-809C-4972-B838-5410E6D0234C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocumentGeneration.BFF.DocumentationGen.Service", "..\DocumentGeneration.BFF.DocumentationGen.Service\DocumentGeneration.BFF.DocumentationGen.Service.csproj", "{930318A0-809C-4972-B838-5410E6D0234C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentGeneration.BFF.HtmlConverter.Service", "..\DocumentGeneration.BFF.HtmlConverter.Service\DocumentGeneration.BFF.HtmlConverter.Service.csproj", "{AE4C6E3D-C584-42B3-BFDE-A8810DD17091}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{930318A0-809C-4972-B838-5410E6D0234C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{930318A0-809C-4972-B838-5410E6D0234C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{930318A0-809C-4972-B838-5410E6D0234C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE4C6E3D-C584-42B3-BFDE-A8810DD17091}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE4C6E3D-C584-42B3-BFDE-A8810DD17091}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE4C6E3D-C584-42B3-BFDE-A8810DD17091}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE4C6E3D-C584-42B3-BFDE-A8810DD17091}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
