@@ -168,7 +168,7 @@ Resources:
         - Namespace: aws:ec2:vpc
           OptionName: AssociatePublicIpAddress
           Value: true
-      SolutionStackName: "64bit Amazon Linux 2 v5.4.0 running .NET Core"
+      SolutionStackName: "64bit Amazon Linux 2023 v3.0.5 running .NET 6"
 
   SpectacularDocumentationGeneratorInstanceRole:
     Type: AWS::IAM::Role
