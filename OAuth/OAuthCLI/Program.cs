@@ -8,11 +8,18 @@ public class Program
 
     async static Task Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
+        Console.WriteLine("Simulating Login");
 
         OAuth user = new OAuth(client);
-        await user.Login();
-        System.Console.WriteLine("Goodbye World!");
+        bool success = await user.Login();
+        if (success)
+        {
+            System.Console.WriteLine(user.AccessToken);
+        }
+        else 
+        {
+            System.Console.WriteLine("Failed to get token!");
+        }
 
     }
 }
