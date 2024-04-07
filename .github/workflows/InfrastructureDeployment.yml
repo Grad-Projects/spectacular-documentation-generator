@@ -23,7 +23,7 @@ jobs:
         run: |
           aws cloudformation deploy \
             --template-file CloudFormation.yml \
-            --stack-name spectacular-documentation-generator \
+            --stack-name spectacular-generator \
             --parameter-overrides \
               VpcCIDR="10.0.0.0/16" \
               KeyName="spectacular-keypair" \
