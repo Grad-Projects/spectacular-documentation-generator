@@ -130,7 +130,7 @@ Resources:
     Properties:
       ApplicationName: !Ref DotNetCSharpApplication
       Description: ElasticBeanstalk Environment
-      EnvironmentName: !Sub ${AWS::StackName}-DotNetCSharp
+      EnvironmentName: !Sub ${AWS::StackName}
       TemplateName: !Ref ConfigurationTemplate
       OptionSettings:
         - Namespace: aws:elasticbeanstalk:application:environment
