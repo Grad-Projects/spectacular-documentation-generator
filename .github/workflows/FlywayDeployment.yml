@@ -1,0 +1,27 @@
+name: Flyway Deploy
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'Database/**'
+
+jobs:
+  Deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      
+      - name: Flyway Validate and Migrate
+        uses: joshuaavalon/flyway-action@v3.0.0
+        with:
+          url: jdbc:postgresql://${{ secrets.DB_URL }}/SpectacularDocumentationDB
+          user: ${{ secrets.DB_MASTER_USERNAME }}
+          password: ${{ secrets.DB_MASTER_USER_PASSWORD }}
+          locations: filesystem:./Database
+        env:
+          FLYWAY_VALIDATE_MIGRATION_NAMING: true
