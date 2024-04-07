@@ -11,6 +11,8 @@ namespace DocumentGeneration.BFF.DocumentationGen.Service
         {
             services.AddScoped<CodeAnalyzerService>();
             services.AddScoped<AnalyzeCode>(s => s.GetRequiredService<CodeAnalyzerService>().Analyze);
+            services.AddScoped<AnalyzeFolder>(s => s.GetRequiredService<CodeAnalyzerService>().AnalyzeFolder);
+
             return services;
         }
     }

@@ -9,6 +9,8 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using DocumentGeneration.BFF.Core.Interfaces;
 using System.Reflection.Metadata;
+using DocumentGeneration.BFF.DocumentationGen.Service.Utils;
+using System.IO.Compression;
 
 
 namespace DocumentGeneration.BFF.DocumentationGen.Service.Service
@@ -39,11 +41,16 @@ namespace DocumentGeneration.BFF.DocumentationGen.Service.Service
                     .SelectMany(f => f.Declaration.Variables.Select(v => v.Identifier.Text))
                     .ToList();
 
-
-
                 // Return extracted information
                 return string.Join(", ", fieldDeclarations);
             }
+        }
+
+        // Use the existing analyser to document all the code in the folder and return it
+        public string AnalyzeFolder(ZipArchive zipArchive)
+        {
+            ZipFileHandler.SaveZipFile(zipArchive, @"./archive/");
+            return "Success";
         }
     }
 }
