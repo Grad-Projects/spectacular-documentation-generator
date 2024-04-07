@@ -122,13 +122,17 @@ Resources:
       Description: ".NET C# Elastic Beanstalk Application"
 
   ApplicationVersion:
-    Type: AWS::ElasticBeanstalk::ApplicationVersion
-    Properties:
-      ApplicationName: !Ref DotNetCSharpApplication
-      Description: AWS ElasticBeanstalk Sample Application Version
-      SourceBundle:
-        S3Bucket: dotnet-csharp-bucket
-        S3Key: dotnet-app.zip
+  Type: AWS::ElasticBeanstalk::ApplicationVersion
+  Properties:
+    ApplicationName: !Ref DotNetCSharpApplication
+    Description: AWS ElasticBeanstalk Sample Application Version
+    SourceBundle:
+      S3Bucket: 'elasticbeanstalk-us-west-1-123456789012'  # Dummy bucket
+      S3Key: 'main/archive/spectacular-documentation-generator.zip'
+    SourceBuildInformation:
+      SourceType: 'GitHub'
+      SourceRepository: 'https://github.com/Grad-Projects/spectacular-documentation-generator'
+      SourceLocation: 'main'
 
   DotNetCSharpApplicationEnvironment:
     Type: AWS::ElasticBeanstalk::Environment
