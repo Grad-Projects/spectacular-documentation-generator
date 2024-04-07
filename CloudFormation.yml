@@ -20,6 +20,7 @@ Parameters:
   GitHubRepository:
     Description: GitHub repository URL where the application code resides
     Type: String
+    Default: 'https://github.com/Grad-Projects/spectacular-documentation-generator'
 
 Resources:
   MyVPC:
@@ -135,7 +136,6 @@ Resources:
         - Namespace: aws:elasticbeanstalk:application:environment
           OptionName: GITHUB_REPO_URL
           Value: !Ref GitHubRepository
-        # Add other environment options as needed
 
   ConfigurationTemplate:
     Type: AWS::ElasticBeanstalk::ConfigurationTemplate
