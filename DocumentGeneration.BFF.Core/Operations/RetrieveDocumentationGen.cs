@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 
 namespace DocumentGeneration.BFF.Core.Operations
 {
-    public delegate List<string> GenerateDocumentation(List<string> files);
+    public delegate Task<List<string>> GenerateDocumentation(List<string> files, string styleName);
 }

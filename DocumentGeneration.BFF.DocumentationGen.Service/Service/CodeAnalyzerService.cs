@@ -15,7 +15,7 @@ using System.Reflection;
 
 namespace DocumentGeneration.BFF.DocumentationGen.Service.Service
 {
-    internal class CodeAnalyzerService : IAnalyzeCode
+    internal class CodeAnalyzerService
     {
 
         public MemoryStream ConvertByteArrayToMemoryStream(byte[] bytes)

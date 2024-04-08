@@ -7,6 +7,7 @@ using DocumentGeneration.BFF.Core.Interfaces;
 using DocumentGeneration.BFF.Core.Usecases;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace DocumentGeneration.BFF.Core
 {
@@ -16,8 +17,6 @@ namespace DocumentGeneration.BFF.Core
         {
             services.AddScoped<IGenerateDocumentationUsecase, GenerateDocumentationUsecase>();
             services.AddScoped<ITestCase, loggingTestUsecase>();
-            services.AddScoped<IConvertToHtmlUsecase, GenerateDocumentationUsecase>();
-            services.AddScoped<IAnalyzeCode, GenerateDocumentationUsecase>();
             return services;
         }
     }
