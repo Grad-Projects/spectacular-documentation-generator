@@ -21,10 +21,8 @@ ul{
     list-style-type: "💡";
     color:rgb(255, 255, 255); 
     font-family: Lato;
-}');
-
-INSERT INTO public.styles (styleName, styleContent)
-VALUES ('Serious Business', '@import url(''https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap'');
+}'),
+('Serious Business', '@import url(''https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap'');
 
 body {
     background-image: url("https://images.pexels.com/photos/952670/pexels-photo-952670.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
