@@ -10,24 +10,50 @@ using System.Threading.Tasks;
 
 namespace DocumentGeneration.BFF.Core.Usecases
 {
-    internal class GenerateDocumentationUsecase : IGenerateDocumentationUsecase
+    internal class GenerateDocumentationUsecase : IGenerateDocumentationUsecase, IConvertToHtmlUsecase, IAnalyzeCode
     {
         private readonly AnalyzeCode _analyze;
         private readonly ILogger<GenerateDocumentationUsecase> _logger;
+        private readonly ConvertToHtml _convertToHtml;
 
-        public GenerateDocumentationUsecase(AnalyzeCode analyze , ILogger<GenerateDocumentationUsecase> logger)
+        public GenerateDocumentationUsecase(AnalyzeCode analyze , ILogger<GenerateDocumentationUsecase> logger, ConvertToHtml convertToHtml)
         {
             _analyze = analyze;
             _logger = logger;
+            _convertToHtml = convertToHtml;
         }
 
-        documentBaseClass IGenerateDocumentationUsecase.Analyze(string base64String)
+        public documentBaseClass Analyze(string base64String)
         {
             documentBaseClass result = _analyze(base64String);
 
-            _logger.LogInformation(result.Methods[0].parameters[0].ToString());
+            _logger.LogInformation(result.Methods[0].Parameters[0].ToString());
 
             return result;
         }
+
+        public string ToHtml(documentBaseClass fileInfo)
+        {
+           var html = _convertToHtml(fileInfo);
+            return html;
+        }
+
+        public List<string> GenDocumentation(List<string> files)
+        {
+            List<documentBaseClass> fileInfo = new List<documentBaseClass>();
+            foreach (var file in files)
+            {
+                fileInfo.Add(Analyze(file));
+            }
+
+            List<string> htmlForFiles = new List<string>();
+            foreach (var file in fileInfo)
+            {
+                htmlForFiles.Add(ToHtml(file));
+            }
+            
+            return htmlForFiles;
+        }
+
     }
 }

@@ -11,10 +11,10 @@ namespace Api.Endpoints
         {
 
             endpoints.MapGet("generate/documentation", (
-                   [FromQuery] string? document,
+                   [FromBody] List<string> document,
                    [FromServices] IGenerateDocumentationUsecase _generateDocumentation
                     )
-               => _generateDocumentation.Analyze(document)
+               => _generateDocumentation.GenDocumentation(document)
             )
            .Produces(StatusCodes.Status200OK, typeof(string))
            .Produces(StatusCodes.Status500InternalServerError)

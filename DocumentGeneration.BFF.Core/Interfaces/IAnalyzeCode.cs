@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace DocumentGeneration.BFF.Core.Interfaces
 {
-    public interface IGenerateDocumentationUsecase
+    public interface IAnalyzeCode
     {
-        public List<string> GenDocumentation(List<string> files);
+        public documentBaseClass Analyze(string base64String);
     }
 }
