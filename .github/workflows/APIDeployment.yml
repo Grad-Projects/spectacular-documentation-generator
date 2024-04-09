@@ -18,13 +18,13 @@ jobs:
 
     - name: Build API
       run: |
-        pwd
         cd Api
-        ls
         sudo dotnet build --self-contained -c Release Api.sln
 
     - name: Publish API
-      run: sudo dotnet publish --self-contained -c Release -r linux-x64 --output ./publish Api.sln
+      run: |
+        cd Api
+        sudo dotnet publish --self-contained -c Release -r linux-x64 --output ./publish Api.sln
 
 
     - name: Configure AWS credentials
