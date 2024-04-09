@@ -1,4 +1,5 @@
 ﻿using Api.Endpoints;
+using DocumentGeneration.BFF.API.Middleware;
 using Serilog;
 
 namespace Api.Configuration
@@ -25,6 +26,7 @@ namespace Api.Configuration
                     }
                 });
             }
+            app.UseGithubAuth(); // Custom Middleware :)
             app.UseRouting();
             return app;
         }
