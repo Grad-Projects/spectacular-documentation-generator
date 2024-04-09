@@ -29,20 +29,22 @@ namespace DocumentGeneration.BFF.API.Middleware
             }
             else
             {
-                if (!await GetUserAuth(AuthHeader))
+                var response = await GetUserAuth(AuthHeader);
+                if (response.StatusCode != 200)
                 {
-                    await WriteMessage(context, 403, $"Token {AuthHeader} is not valid");
+                    await WriteMessage(context, 403, $"Token {AuthHeader} is not valid.\nGot an error {response.StatusCode} from GitHub");
                 }
                 else
                 {
                     // Passed authentication, carry on!
+                    context.Request.Headers.Append("Username", response.login);
                     await _next(context);
                 }
             }
         }
 
         // Check if user is authenticated with GitHub
-        public static async Task<bool> GetUserAuth(string AccessToken)
+        public static async Task<GithubResponse> GetUserAuth(string AccessToken)
         {
             using (var request = new HttpRequestMessage(HttpMethod.Get, "https://api.github.com/user"))
             {
@@ -53,7 +55,17 @@ namespace DocumentGeneration.BFF.API.Middleware
 
                 var response = await httpClient.SendAsync(request);
                 Log.Logger.Information($"Github Response for token {AccessToken}:\n{response}");
-                return response.IsSuccessStatusCode;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var githubResponse = await response.Content.ReadFromJsonAsync<GithubResponse>();
+                    githubResponse.StatusCode = 200;
+                    return githubResponse;
+                }
+                else
+                {
+                    return new((int)response.StatusCode, null);
+                }
             }
         }
 
@@ -63,6 +75,13 @@ namespace DocumentGeneration.BFF.API.Middleware
             context.Response.StatusCode = statusCode;
             var text = Encoding.UTF8.GetBytes(message);
             await context.Response.Body.WriteAsync(text);
+        }
+
+        // Internal class to allow passing more information back from GH response
+        public class GithubResponse(int statusCode, string? login)
+        {
+            public int StatusCode { get; set; } = statusCode;
+            public string? login { get; set; } = login; // Named to read from API directly
         }
     }
 
