@@ -14,17 +14,17 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '6.x'
+        dotnet-version: '8.x'
 
     - name: Build API
       run: |
         pwd
         cd Api
         ls
-        dotnet build -c Release Api.sln
+        dotnet build --self-contained -c Release Api.sln
 
     - name: Publish API
-      run: dotnet publish -c Release -r linux-x64 --output ./publish Api.sln
+      run: dotnet publish --self-contained -c Release -r linux-x64 --output ./publish Api.sln
 
 
     - name: Configure AWS credentials
