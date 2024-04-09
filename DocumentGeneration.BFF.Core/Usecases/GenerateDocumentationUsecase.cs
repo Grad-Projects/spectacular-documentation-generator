@@ -16,13 +16,17 @@ namespace DocumentGeneration.BFF.Core.Usecases
         private readonly ILogger<GenerateDocumentationUsecase> _logger;
         private readonly ConvertToHtml _convertToHtml;
         private readonly getStyleFromDB _getStyleFromDB;
+        private readonly postDocumentToDB _postDocumentToDB;
+        private readonly CheckOrAddUser _checkOrAddUserToDB;
 
-        public GenerateDocumentationUsecase(AnalyzeCode analyze , ILogger<GenerateDocumentationUsecase> logger, ConvertToHtml convertToHtml, getStyleFromDB databaseService)
+        public GenerateDocumentationUsecase(AnalyzeCode analyze , ILogger<GenerateDocumentationUsecase> logger, ConvertToHtml convertToHtml, getStyleFromDB databaseService, postDocumentToDB postDocumentToDB, CheckOrAddUser checkOrAddUserToDB)
         {
             _analyze = analyze;
             _logger = logger;
             _convertToHtml = convertToHtml;
             _getStyleFromDB = databaseService;
+            _postDocumentToDB = postDocumentToDB;
+            _checkOrAddUserToDB = checkOrAddUserToDB;   
         }
 
         public documentBaseClass Analyze(string base64String)
@@ -40,7 +44,7 @@ namespace DocumentGeneration.BFF.Core.Usecases
            return html;
         }
 
-        public async Task<List<string>> GenDocumentation(List<string> files, string styleName)
+        public async Task<List<(string, string)>> GenDocumentation(List<string> files, string styleName, string userName)
         {
             var style = await getStyleFromDB(styleName);
             List<documentBaseClass> fileInfo = new List<documentBaseClass>();
@@ -49,12 +53,18 @@ namespace DocumentGeneration.BFF.Core.Usecases
                 fileInfo.Add(Analyze(file));
             }
 
-            List<string> htmlForFiles = new List<string>();
+            List<(string name, string html)> htmlForFiles = new List<(string name, string html)>();
             foreach (var file in fileInfo)
             {
-                htmlForFiles.Add(ToHtml(file, style));
+                htmlForFiles.Add((file.Name, ToHtml(file, style)));
             }
-            
+
+            foreach (var file in htmlForFiles)
+            {
+                await _postDocumentToDB(file.html, style, userName, file.name);
+            }
+
+
             return htmlForFiles;
         }
 

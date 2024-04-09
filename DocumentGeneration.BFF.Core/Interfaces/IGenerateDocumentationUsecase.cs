@@ -9,6 +9,6 @@ namespace DocumentGeneration.BFF.Core.Interfaces
 {
     public interface IGenerateDocumentationUsecase
     {
-        public Task<List<string>> GenDocumentation(List<string> files, string styleName);
+        public Task<List<(string, string)>> GenDocumentation(List<string> files, string styleName, string userName);
     }
 }

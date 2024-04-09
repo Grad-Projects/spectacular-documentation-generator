@@ -14,6 +14,7 @@ namespace DocumentGeneration.BFF.Database.Service
                 .BindConfiguration($"{DatabaseOptions.Section}");
             services.AddScoped<DatabaseService>();
             services.AddScoped<getStyleFromDB>(s => s.GetRequiredService<DatabaseService>().getStyleFromDB);
+            services.AddScoped<postDocumentToDB>(s => s.GetRequiredService<DatabaseService>().postDocumentToDB);
             return services;
         }
 
