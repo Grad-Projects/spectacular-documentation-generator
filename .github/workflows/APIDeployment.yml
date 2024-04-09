@@ -18,7 +18,9 @@ jobs:
 
     - name: Build API
       run: |
+        pwd
         cd Api
+        ls
         dotnet build -c Release
 
     - name: Publish API
