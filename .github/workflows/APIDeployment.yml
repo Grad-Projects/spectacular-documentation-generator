@@ -21,10 +21,10 @@ jobs:
         pwd
         cd Api
         ls
-        dotnet build -c Release
+        dotnet build -c Release Api.sln
 
     - name: Publish API
-      run: dotnet publish -c Release -r linux-x64 --output ./publish
+      run: dotnet publish -c Release -r linux-x64 --output ./publish Api.sln
 
 
     - name: Configure AWS credentials
