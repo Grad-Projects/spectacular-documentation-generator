@@ -49,10 +49,10 @@ namespace DocumentGeneration.BFF.API.Middleware
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", AccessToken);
                 request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github+json"));
                 request.Headers.Add("X-GitHub-Api-Version", "2022-11-28");
+                request.Headers.Add("User-Agent", "csharp-levelup-docugen-oauth");
 
                 var response = await httpClient.SendAsync(request);
                 Log.Logger.Information($"Github Response for token {AccessToken}:\n{response}");
-                // TODO: Why is this always a 403??
                 return response.IsSuccessStatusCode;
             }
         }
