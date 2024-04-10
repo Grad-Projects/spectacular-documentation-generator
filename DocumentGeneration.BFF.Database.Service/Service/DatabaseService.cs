@@ -73,14 +73,16 @@ namespace DocumentGeneration.BFF.Database.Service.Service
                 try
                 {
                     await connection.OpenAsync();
-                    using(var command = new NpgsqlCommand("add_doc", connection))
+                    using(var command = new NpgsqlCommand("\"add_doc\"", connection))
                     {
-                        command.CommandType = CommandType.StoredProcedure;
-
-                        command.Parameters.AddWithValue("document_name", documentName);
-                        command.Parameters.AddWithValue("document_content", htmlFile);
+                        
+                        command.Parameters.AddWithValue("doc_name", documentName);
+                        command.Parameters.AddWithValue("doc_content", htmlFile);
                         command.Parameters.AddWithValue("style_name", styleName);
-                        command.Parameters.AddWithValue("githubUserName", userName);
+                        command.Parameters.AddWithValue("user_name", userName);
+
+                        command.CommandType = CommandType.StoredProcedure;
+                        await command.ExecuteNonQueryAsync();
 
                     }
                 }
@@ -92,54 +94,18 @@ namespace DocumentGeneration.BFF.Database.Service.Service
             }
         }
 
-        //public async Task CheckOrAddUser(string userName)
-        //{
-        //    using (var connection = GetConnection())
-        //    {
-        //        try
-        //        {
-        //            await connection.OpenAsync();
-        //            using (var command = new NpgsqlCommand())
-        //            {
-        //                command.Connection = connection;
-        //                command.CommandText = "SELECT COUNT(*) FROM users WHERE \"githubUserName\" = @UserName";
-        //                command.Parameters.AddWithValue("UserName", userName);
-
-                        
-        //                var result = await command.ExecuteScalarAsync();
-        //                int count = Convert.ToInt32(result);
-
-        //                if (count == 0)
-        //                {
-                            
-        //                    command.CommandText = "INSERT INTO users (\"githubUserName\") VALUES (@UserName)";
-        //                    await command.ExecuteNonQueryAsync();
-        //                    Console.WriteLine($"User {userName} added successfully!");
-        //                }
-        //                else
-        //                {
-        //                    Console.WriteLine($"User {userName} already exists!");
-        //                }
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            Console.WriteLine($"Error querying database: {ex.Message}");
-        //        }
-        //    }
-        //}
-
         public async Task addUserToDb(string userName) {
             using (var connection = GetConnection())
             {
                 try
                 {
                     await connection.OpenAsync();
-                    using (var command = new NpgsqlCommand("add_user", connection))
+                    using (var command = new NpgsqlCommand("\"add_user\"", connection))
                     {
+                        command.Parameters.AddWithValue("user_name", userName);
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("githubUserName", userName);
+                        await command.ExecuteNonQueryAsync();
                     }
                 }
                 catch (Exception ex)
@@ -157,22 +123,16 @@ namespace DocumentGeneration.BFF.Database.Service.Service
                 try
                 {
                     await connection.OpenAsync();
-                    using (var command = new NpgsqlCommand("check_user_exists", connection))
+                    using (var command = new NpgsqlCommand("SELECT check_user_exists(@githubUserName)", connection))
                     {
-                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@githubUserName", userName);
 
-                        command.Parameters.AddWithValue("githubUserName", userName);
+                        var result = await command.ExecuteScalarAsync();
 
-                        command.Parameters.Add(new NpgsqlParameter<bool>("result", NpgsqlDbType.Boolean));
-                        command.Parameters["result"].Direction = ParameterDirection.Output;
-
-                        await command.ExecuteNonQueryAsync();
-
-                        // Get the output parameter value
-                       if(!(bool)command.Parameters["result"].Value)
-                       {
-                           await addUserToDb(userName);
-                       }
+                        if (!(bool)result)
+                        {
+                            await addUserToDb(userName);
+                        }
                     }
                 }
                 catch (Exception ex)
