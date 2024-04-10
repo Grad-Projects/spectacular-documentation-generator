@@ -45,5 +45,5 @@ jobs:
         region: 'eu-west-1'
         application_name: DotNetCSharpApplication
         environment_name: spectacular-generator
-        version_label: v1
+        version_label: 'v${{ GITHUB.RUN_NUMBER }}'
         deploy_file: Api/publish
