@@ -35,6 +35,14 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: 'eu-west-1'
 
+    - name: Install AWS CLI
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y awscli
+      
+    - name: Check AWS CLI version
+      run: aws --version
+
     - name: Deploy to Elastic Beanstalk
       run: |
         cd Api
@@ -46,8 +54,10 @@ jobs:
           --application-name "DotNetCSharpApplication" \
           --version-label "v${TIMESTAMP}" \
           --source-bundle "fileb://${GITHUB_WORKSPACE}/publish.zip"
+          --debug
         aws elasticbeanstalk update-environment \
           --application-name "DotNetCSharpApplication" \
           --environment-name "spectacular-generator" \
           --version-label "v${TIMESTAMP}"
+          --debug
           
