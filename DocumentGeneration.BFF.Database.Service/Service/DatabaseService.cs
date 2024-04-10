@@ -75,7 +75,6 @@ namespace DocumentGeneration.BFF.Database.Service.Service
                     await connection.OpenAsync();
                     using(var command = new NpgsqlCommand("\"add_doc\"", connection))
                     {
-                        
                         command.Parameters.AddWithValue("doc_name", documentName);
                         command.Parameters.AddWithValue("doc_content", htmlFile);
                         command.Parameters.AddWithValue("style_name", styleName);

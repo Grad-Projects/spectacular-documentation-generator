@@ -59,7 +59,7 @@ namespace DocumentGeneration.BFF.Core.Usecases
 
             foreach (var file in htmlForFiles)
             {
-                await _postDocumentToDB(file.html, style, userName, file.name);
+                await _postDocumentToDB(file.html, styleName, userName, file.name);
             }
 
 
