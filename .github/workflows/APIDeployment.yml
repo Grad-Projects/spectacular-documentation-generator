@@ -54,4 +54,4 @@ jobs:
         application_name: DotNetCSharpApplication
         environment_name: spectacular-generator
         version_label: v1
-        deploy_package: Api/publish.zip
+        deploy_package: spectacular-documentation-generator/Api/publish.zip
