@@ -53,11 +53,11 @@ jobs:
         aws elasticbeanstalk create-application-version \
           --application-name "DotNetCSharpApplication" \
           --version-label "v${TIMESTAMP}" \
-          --source-bundle "fileb://${GITHUB_WORKSPACE}/publish.zip"
+          --source-bundle "fileb://${GITHUB_WORKSPACE}/publish.zip" \
           --debug
         aws elasticbeanstalk update-environment \
           --application-name "DotNetCSharpApplication" \
           --environment-name "spectacular-generator" \
-          --version-label "v${TIMESTAMP}"
+          --version-label "v${TIMESTAMP}" \
           --debug
           
