@@ -20,7 +20,7 @@ jobs:
       run: |
         cd Api
         dotnet restore Api.sln
-        sudo dotnet build -v detailed -c Release Api.sln
+        sudo dotnet build -c Release Api.sln
 
     - name: Publish API
       run: |
@@ -39,14 +39,16 @@ jobs:
       run: |
         cd Api
         cd publish 
-        zip -r ../publish.zip .
+        zip -r publish.zip .
+        mv publish.zip $GITHUB_WORKSPACE
         aws elasticbeanstalk create-application-version \
           --application-name "DotNetCSharpApplication" \
           --version-label "${GITHUB_SHA::7}" \
-          --source-bundle "../publish.zip"
+          --source-bundle "fileb://${GITHUB_WORKSPACE}/publish.zip"
         aws elasticbeanstalk update-environment \
           --application-name "DotNetCSharpApplication" \
           --environment-name "spectacular-generator" \
           --version-label "${GITHUB_SHA::7}"
+
 
 
