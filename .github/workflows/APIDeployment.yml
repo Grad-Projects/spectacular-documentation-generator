@@ -50,4 +50,4 @@ jobs:
         application_name: DotNetCSharpApplication
         environment_name: spectacular-generator
         version_label: 'v${{ GITHUB.RUN_NUMBER }}'
-        deploy_file: Api/publish.zip
+        deploy_package: Api/publish.zip
