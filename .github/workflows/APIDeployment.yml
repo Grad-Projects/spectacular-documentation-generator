@@ -19,7 +19,8 @@ jobs:
     - name: Build API
       run: |
         cd Api
-        sudo dotnet build --self-contained -c Release -r linux-x64 Api.sln
+        dotnet restore Api.sln
+        sudo dotnet build -v detailed -c Release Api.sln
 
     - name: Publish API
       run: |
