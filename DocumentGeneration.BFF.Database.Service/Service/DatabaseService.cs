@@ -10,6 +10,7 @@ using DocumentGeneration.BFF.Core.Interfaces;
 using Microsoft.Extensions.Options;
 using Npgsql;
 using System.Data;
+using NpgsqlTypes;
 
 namespace DocumentGeneration.BFF.Database.Service.Service
 {
@@ -65,19 +66,19 @@ namespace DocumentGeneration.BFF.Database.Service.Service
 
         }
 
-        public async Task postDocumentToDB(string htmlFile, string styleName, string userName, string documentName, string documentContent)
+        public async Task postDocumentToDB(string htmlFile, string styleName, string userName, string documentName)
         {
             using (var connection = GetConnection())
             {
                 try
                 {
                     await connection.OpenAsync();
-                    using(var command = new NpgsqlCommand("name of proc here", connection))
+                    using(var command = new NpgsqlCommand("add_doc", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
                         command.Parameters.AddWithValue("document_name", documentName);
-                        command.Parameters.AddWithValue("document_content", documentContent);
+                        command.Parameters.AddWithValue("document_content", htmlFile);
                         command.Parameters.AddWithValue("style_name", styleName);
                         command.Parameters.AddWithValue("githubUserName", userName);
 
@@ -128,17 +129,50 @@ namespace DocumentGeneration.BFF.Database.Service.Service
         //    }
         //}
 
-        public async Task CheckOrAddUser(string userName) {
+        public async Task addUserToDb(string userName) {
             using (var connection = GetConnection())
             {
                 try
                 {
                     await connection.OpenAsync();
-                    using (var command = new NpgsqlCommand("proc name", connection))
+                    using (var command = new NpgsqlCommand("add_user", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
                         command.Parameters.AddWithValue("githubUserName", userName);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error querying database: {ex.Message}");
+                }
+            }
+        }
+
+        //checks to see if the user exist in db and if not we add them 
+        public async Task checkUserInDB(string userName)
+        {
+            using (var connection = GetConnection())
+            {
+                try
+                {
+                    await connection.OpenAsync();
+                    using (var command = new NpgsqlCommand("check_user_exists", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("githubUserName", userName);
+
+                        command.Parameters.Add(new NpgsqlParameter<bool>("result", NpgsqlDbType.Boolean));
+                        command.Parameters["result"].Direction = ParameterDirection.Output;
+
+                        await command.ExecuteNonQueryAsync();
+
+                        // Get the output parameter value
+                       if(!(bool)command.Parameters["result"].Value)
+                       {
+                           await addUserToDb(userName);
+                       }
                     }
                 }
                 catch (Exception ex)

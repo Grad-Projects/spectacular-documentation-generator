@@ -17,16 +17,14 @@ namespace DocumentGeneration.BFF.Core.Usecases
         private readonly ConvertToHtml _convertToHtml;
         private readonly getStyleFromDB _getStyleFromDB;
         private readonly postDocumentToDB _postDocumentToDB;
-        private readonly CheckOrAddUser _checkOrAddUserToDB;
 
-        public GenerateDocumentationUsecase(AnalyzeCode analyze , ILogger<GenerateDocumentationUsecase> logger, ConvertToHtml convertToHtml, getStyleFromDB databaseService, postDocumentToDB postDocumentToDB, CheckOrAddUser checkOrAddUserToDB)
+        public GenerateDocumentationUsecase(AnalyzeCode analyze , ILogger<GenerateDocumentationUsecase> logger, ConvertToHtml convertToHtml, getStyleFromDB databaseService, postDocumentToDB postDocumentToDB)
         {
             _analyze = analyze;
             _logger = logger;
             _convertToHtml = convertToHtml;
             _getStyleFromDB = databaseService;
-            _postDocumentToDB = postDocumentToDB;
-            _checkOrAddUserToDB = checkOrAddUserToDB;   
+            _postDocumentToDB = postDocumentToDB;   
         }
 
         public documentBaseClass Analyze(string base64String)

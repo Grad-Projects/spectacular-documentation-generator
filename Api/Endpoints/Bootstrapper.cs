@@ -12,9 +12,8 @@
             //add endpoints here
             var versionedApi = endpoints.NewVersionedApi();
             versionedApi.MapGroup("/api")
-            .AddDocumentEndpoint();
-
-
+            .AddDocumentEndpoint()
+            .AddCheckUserEndPoint();
 
             return endpoints;
         }
