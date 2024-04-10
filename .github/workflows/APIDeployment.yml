@@ -28,7 +28,11 @@ jobs:
       run: |
         cd Api
         sudo dotnet publish --self-contained -c Release -r linux-x64 --output ./publish Api.sln
-
+        
+    - name: Zip Published Files
+      run: |
+        cd Api/publish
+        sudo zip -r ../publish.zip .
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v2
@@ -46,4 +50,4 @@ jobs:
         application_name: DotNetCSharpApplication
         environment_name: spectacular-generator
         version_label: 'v${{ GITHUB.RUN_NUMBER }}'
-        deploy_file: Api/publish
+        deploy_file: Api/publish.zip
