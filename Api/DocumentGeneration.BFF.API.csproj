@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+	<UserSecretsId>CONNECTION_STRING</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,6 +31,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DocumentGeneration.BFF.Core\DocumentGeneration.BFF.Core.csproj" />
+    <ProjectReference Include="..\DocumentGeneration.BFF.Database.Service\DocumentGeneration.BFF.Database.Service.csproj" />
     <ProjectReference Include="..\DocumentGeneration.BFF.DocumentationGen.Service\DocumentGeneration.BFF.DocumentationGen.Service.csproj" />
     <ProjectReference Include="..\DocumentGeneration.BFF.HtmlConverter.Service\DocumentGeneration.BFF.HtmlConverter.Service.csproj" />
   </ItemGroup>

@@ -10,17 +10,21 @@ using System.Threading.Tasks;
 
 namespace DocumentGeneration.BFF.Core.Usecases
 {
-    internal class GenerateDocumentationUsecase : IGenerateDocumentationUsecase, IConvertToHtmlUsecase, IAnalyzeCode
+    internal class GenerateDocumentationUsecase : IGenerateDocumentationUsecase 
     {
         private readonly AnalyzeCode _analyze;
         private readonly ILogger<GenerateDocumentationUsecase> _logger;
         private readonly ConvertToHtml _convertToHtml;
+        private readonly getStyleFromDB _getStyleFromDB;
+        private readonly postDocumentToDB _postDocumentToDB;
 
-        public GenerateDocumentationUsecase(AnalyzeCode analyze , ILogger<GenerateDocumentationUsecase> logger, ConvertToHtml convertToHtml)
+        public GenerateDocumentationUsecase(AnalyzeCode analyze , ILogger<GenerateDocumentationUsecase> logger, ConvertToHtml convertToHtml, getStyleFromDB databaseService, postDocumentToDB postDocumentToDB)
         {
             _analyze = analyze;
             _logger = logger;
             _convertToHtml = convertToHtml;
+            _getStyleFromDB = databaseService;
+            _postDocumentToDB = postDocumentToDB;   
         }
 
         public documentBaseClass Analyze(string base64String)
@@ -32,28 +36,40 @@ namespace DocumentGeneration.BFF.Core.Usecases
             return result;
         }
 
-        public string ToHtml(documentBaseClass fileInfo)
+        public string ToHtml(documentBaseClass fileInfo, string style)
         {
-           var html = _convertToHtml(fileInfo);
-            return html;
+           var html = _convertToHtml(fileInfo, style);
+           return html;
         }
 
-        public List<string> GenDocumentation(List<string> files)
+        public async Task<List<(string, string)>> GenDocumentation(List<string> files, string styleName, string userName)
         {
+            var style = await getStyleFromDB(styleName);
             List<documentBaseClass> fileInfo = new List<documentBaseClass>();
             foreach (var file in files)
             {
                 fileInfo.Add(Analyze(file));
             }
 
-            List<string> htmlForFiles = new List<string>();
+            List<(string name, string html)> htmlForFiles = new List<(string name, string html)>();
             foreach (var file in fileInfo)
             {
-                htmlForFiles.Add(ToHtml(file));
+                htmlForFiles.Add((file.Name, ToHtml(file, style)));
             }
-            
+
+            foreach (var file in htmlForFiles)
+            {
+                await _postDocumentToDB(file.html, styleName, userName, file.name);
+            }
+
+
             return htmlForFiles;
         }
 
+        public async Task<string> getStyleFromDB(string styleName)
+        {
+            var result = await _getStyleFromDB(styleName);
+            return result;
+        }
     }
 }

@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace DocumentGeneration.BFF.HtmlConverter.Service.Service
 {
-    internal class HtmlConverterService : IConvertToHtmlUsecase
+    internal class HtmlConverterService 
     {
-        public string ToHtml(documentBaseClass fileInfo)
+        public string ToHtml(documentBaseClass fileInfo, string style)
         {
             StringBuilder htmlBuilder = new StringBuilder();
 
@@ -20,6 +20,7 @@ namespace DocumentGeneration.BFF.HtmlConverter.Service.Service
             htmlBuilder.AppendLine("<head>");
             htmlBuilder.AppendLine("<title>" + fileInfo.Name + "</title>");
             htmlBuilder.AppendLine("<style>");
+            htmlBuilder.AppendLine(style);
             htmlBuilder.AppendLine("body { font-family: Arial, sans-serif; }");
             htmlBuilder.AppendLine("table { border-collapse: collapse; width: 100%; }");
             htmlBuilder.AppendLine("th, td { border: 1px solid #dddddd; text-align: left; padding: 8px; }");
