@@ -44,6 +44,6 @@ jobs:
         aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         region: 'eu-west-1'
         application_name: DotNetCSharpApplication
-        environment_name: spectacular-generato
+        environment_name: spectacular-generator
         version_label: v1
         deploy_file: Api/publish
