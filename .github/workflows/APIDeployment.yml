@@ -39,8 +39,8 @@ jobs:
       run: |
         cd Api
         cd publish 
-        zip -r publish.zip .
-        mv publish.zip $GITHUB_WORKSPACE
+        sudo zip -r publish.zip .
+        sudo mv publish.zip $GITHUB_WORKSPACE
         aws elasticbeanstalk create-application-version \
           --application-name "DotNetCSharpApplication" \
           --version-label "${GITHUB_SHA::7}" \
