@@ -53,12 +53,12 @@ jobs:
         sudo mv publish.zip $GITHUB_WORKSPACE
         aws elasticbeanstalk create-application-version \
           --application-name "DotNetCSharpApplication" \
-          --version-label "${GITHUB_SHA::7}" \
+          --version-label "v1" \
           --source-bundle "fileb://${GITHUB_WORKSPACE}/publish.zip" \
           --debug
         aws elasticbeanstalk update-environment \
           --application-name "DotNetCSharpApplication" \
           --environment-name "spectacular-generator" \
-          --version-label "${GITHUB_SHA::7}" \
+          --version-label "v1" \
           --debug
           
