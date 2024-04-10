@@ -42,9 +42,6 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: 'eu-west-1'
 
-    - name: PWD for debugging
-      run: pwd
-
     - name: Deploy to Elastic Beanstalk
       uses: einaregilsson/beanstalk-deploy@v15
       with:
@@ -54,4 +51,4 @@ jobs:
         application_name: DotNetCSharpApplication
         environment_name: spectacular-generator
         version_label: v1
-        deploy_package: spectacular-documentation-generator/Api/publish.zip
+        deployment_package: spectacular-documentation-generator/Api/publish.zip
