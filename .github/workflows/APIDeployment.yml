@@ -39,16 +39,15 @@ jobs:
       run: |
         cd Api
         cd publish 
-        sudo zip -r publish.zip .
-        sudo mv publish.zip $GITHUB_WORKSPACE
+        zip -r publish.zip .
+        mv publish.zip $GITHUB_WORKSPACE
+        TIMESTAMP=$(date +%Y%m%d%H%M%S)
         aws elasticbeanstalk create-application-version \
           --application-name "DotNetCSharpApplication" \
-          --version-label "${GITHUB_SHA::7}" \
+          --version-label "v${TIMESTAMP}" \
           --source-bundle "fileb://${GITHUB_WORKSPACE}/publish.zip"
         aws elasticbeanstalk update-environment \
           --application-name "DotNetCSharpApplication" \
           --environment-name "spectacular-generator" \
-          --version-label "${GITHUB_SHA::7}"
-
-
-
+          --version-label "v${TIMESTAMP}"
+          
