@@ -1,7 +1,9 @@
 name: Deploy to Elastic Beanstalk
 
 on:
-  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/APIDeployment.yml'
 
 jobs:
   deploy:
@@ -19,13 +21,19 @@ jobs:
     - name: Build API
       run: |
         cd Api
-        sudo dotnet build --self-contained -c Release Api.sln
+        dotnet restore Api.sln
+        sudo dotnet build -c Release Api.sln
 
     - name: Publish API
       run: |
         cd Api
         sudo dotnet publish --self-contained -c Release -r linux-x64 --output ./publish Api.sln
-
+        
+    - name: Zip Published Files
+      run: |
+        cd Api/publish
+        sudo zip -r ../publish.zip .
+        ls -l ..
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v2
@@ -35,14 +43,12 @@ jobs:
         aws-region: 'eu-west-1'
 
     - name: Deploy to Elastic Beanstalk
-      run: |
-        cd publish 
-        zip -r ../publish.zip .
-        aws elasticbeanstalk create-application-version \
-          --application-name "DotNetCSharpApplication" \
-          --version-label "${GITHUB_SHA::7}" \
-        aws elasticbeanstalk update-environment \
-          --application-name "spectacular-generator-DotNetCSharpApplication-PBYS6X9YJ7MR" \
-          --environment-name "spectacular-generator" \
-          --version-label "${GITHUB_SHA::7}"
-
+      uses: einaregilsson/beanstalk-deploy@v15
+      with:
+        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        region: 'eu-west-1'
+        application_name: spectacular-generator-DotNetCSharpApplication-PBYS6X9YJ7MR
+        environment_name: spectacular-generator
+        version_label: v1
+        deployment_package: Api/publish.zip
