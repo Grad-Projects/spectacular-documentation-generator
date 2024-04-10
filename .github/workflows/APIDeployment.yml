@@ -36,13 +36,16 @@ jobs:
 
     - name: Deploy to Elastic Beanstalk
       run: |
+        cd Api
         cd publish 
         zip -r ../publish.zip .
         aws elasticbeanstalk create-application-version \
           --application-name "DotNetCSharpApplication" \
           --version-label "${GITHUB_SHA::7}" \
+          --source-bundle "../publish.zip"
         aws elasticbeanstalk update-environment \
-          --application-name "spectacular-generator-DotNetCSharpApplication-PBYS6X9YJ7MR" \
+          --application-name "DotNetCSharpApplication" \
           --environment-name "spectacular-generator" \
           --version-label "${GITHUB_SHA::7}"
+
 
