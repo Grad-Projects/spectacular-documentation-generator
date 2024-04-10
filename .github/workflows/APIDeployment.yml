@@ -1,7 +1,9 @@
 name: Deploy to Elastic Beanstalk
 
 on:
-  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/APIDeployment.yml'
 
 jobs:
   deploy:
@@ -49,15 +51,14 @@ jobs:
         cd publish 
         sudo zip -r publish.zip .
         sudo mv publish.zip $GITHUB_WORKSPACE
-        TIMESTAMP=$(date +%Y%m%d%H%M%S)
         aws elasticbeanstalk create-application-version \
           --application-name "DotNetCSharpApplication" \
-          --version-label "v${TIMESTAMP}" \
+          --version-label "${GITHUB_SHA::7}" \
           --source-bundle "fileb://${GITHUB_WORKSPACE}/publish.zip" \
           --debug
         aws elasticbeanstalk update-environment \
           --application-name "DotNetCSharpApplication" \
           --environment-name "spectacular-generator" \
-          --version-label "v${TIMESTAMP}" \
+          --version-label "${GITHUB_SHA::7}" \
           --debug
           
