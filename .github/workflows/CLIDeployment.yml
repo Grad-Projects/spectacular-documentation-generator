@@ -31,15 +31,8 @@ jobs:
         cd CLI/SpectactularCLI
         sudo dotnet publish -c Release -r win-x64 --self-contained true --output ./publish
 
-    - name: Publish Artifacts
-      if: success()
-      run: |
-        cd CLI/SpectactularCLI
-        mkdir -p artifacts
-        cp -r publish/* artifacts/
-
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
        name: SpectacularCLI
-       path: CLI/SpectactularCLI/artifacts/SpectactularCLI.exe
+       path: CLI/SpectactularCLI/publish/SpectactularCLI.exe
