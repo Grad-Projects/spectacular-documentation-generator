@@ -1,16 +1,10 @@
 ﻿using SpectactularCLI.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SpectactularCLI.Commands
 {
     public class LoginCommand : Command
     {
-        static readonly HttpClient client = new();
         string _deviceCode = "";
 
         public LoginCommand() : base("L", "Login")
@@ -29,13 +23,13 @@ namespace SpectactularCLI.Commands
 
             try
             {
-                var response = await client.PostAsJsonAsync(loginURL, loginRequestDict);
+                var response = await Global.Client.PostAsJsonAsync(loginURL, loginRequestDict);
 
-                var responseDict = QueryStringToDict(await response.Content.ReadAsStringAsync());
+                var responseDict = HelperMethods.QueryStringToDict(await response.Content.ReadAsStringAsync());
                 _deviceCode = responseDict["device_code"];
                 interval = int.Parse(responseDict["interval"]);
                 string userCode = responseDict["user_code"];
-                var verificationURL = DecodeUrlString(responseDict["verification_uri"]);
+                var verificationURL = HelperMethods.DecodeUrlString(responseDict["verification_uri"]);
                 await Console.Out.WriteLineAsync($"Please navigate to {verificationURL}\nEnter the following Code: {userCode}");
             }
             catch (HttpRequestException e)
@@ -58,14 +52,17 @@ namespace SpectactularCLI.Commands
                 Thread.Sleep((interval + 1) * 1000);
                 try
                 {
-                    var response = await client.PostAsJsonAsync(pollURL, pollRequestDict);
+                    var response = await Global.Client.PostAsJsonAsync(pollURL, pollRequestDict);
 
-                    var responseDict = QueryStringToDict(await response.Content.ReadAsStringAsync());
+                    var responseDict = HelperMethods.QueryStringToDict(await response.Content.ReadAsStringAsync());
 
                     if (responseDict.TryGetValue("access_token", out string? value))
                     {
                         verified = true;
                         Global.AccessToken = value;
+                        Global.Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Global.AccessToken}");
+                        Global.Commands.Clear();
+                        Global.Commands.Add(new GenerateDocumentsCommand());
                     }
                     else
                     {
@@ -95,30 +92,6 @@ namespace SpectactularCLI.Commands
             }
 
             return await base.Execute();
-        }
-
-        // ---------------------------------- Helper Methods ---------------------------------------------------------------
-
-        // https://stackoverflow.com/a/3847593
-        private static string DecodeUrlString(string url)
-        {
-            string newUrl;
-            while ((newUrl = Uri.UnescapeDataString(url)) != url)
-                url = newUrl;
-            return newUrl;
-        }
-
-        // Helper method to create a dictionary with the query string returned from GitHub
-        private static Dictionary<string, string> QueryStringToDict(string queryString)
-        {
-            Dictionary<string, string> output = [];
-            string[] responseSplit = queryString.Split("&");
-            foreach (var s in responseSplit)
-            {
-                var sSplit = s.Split("=");
-                output.Add(sSplit[0], sSplit[1]);
-            }
-            return output;
         }
     }
 }
