@@ -34,7 +34,6 @@ jobs:
     - name: Publish Artifacts
       if: success()
       run: |
-        run: |
         mkdir -p ../artifacts
         cd CLI/SpectactularCLI
         cp -r publish/* ../../artifacts/
