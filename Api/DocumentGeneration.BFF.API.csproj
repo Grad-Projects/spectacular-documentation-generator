@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+	<UserSecretsId>CONNECTION_STRING</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,11 +27,11 @@
 	<PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
 	<PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
 	<PackageReference Include="Serilog.Settings.Configuration" Version="8.0.0" />
-	<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
 	</ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DocumentGeneration.BFF.Core\DocumentGeneration.BFF.Core.csproj" />
+    <ProjectReference Include="..\DocumentGeneration.BFF.Database.Service\DocumentGeneration.BFF.Database.Service.csproj" />
     <ProjectReference Include="..\DocumentGeneration.BFF.DocumentationGen.Service\DocumentGeneration.BFF.DocumentationGen.Service.csproj" />
     <ProjectReference Include="..\DocumentGeneration.BFF.HtmlConverter.Service\DocumentGeneration.BFF.HtmlConverter.Service.csproj" />
   </ItemGroup>

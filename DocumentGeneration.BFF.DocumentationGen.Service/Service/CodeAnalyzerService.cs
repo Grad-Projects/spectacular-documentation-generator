@@ -7,7 +7,6 @@ using System.IO;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using DocumentGeneration.BFF.Core.Interfaces;
 using DocumentGeneration.BFF.Core.Models;
 using System.Reflection.Metadata;
 using System.Reflection;
@@ -15,7 +14,7 @@ using System.Reflection;
 
 namespace DocumentGeneration.BFF.DocumentationGen.Service.Service
 {
-    internal class CodeAnalyzerService : IAnalyzeCode
+    internal class CodeAnalyzerService
     {
 
         public MemoryStream ConvertByteArrayToMemoryStream(byte[] bytes)

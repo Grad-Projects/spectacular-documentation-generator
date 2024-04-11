@@ -2,6 +2,7 @@
 using DocumentGeneration.BFF.Core;
 using DocumentGeneration.BFF.DocumentationGen.Service;
 using DocumentGeneration.BFF.HtmlConverter.Service;
+using DocumentGeneration.BFF.Database.Service;
 
 namespace Api.Configuration
 {
@@ -12,6 +13,7 @@ namespace Api.Configuration
             services.AddConfigurationServices(configuration)
             .AddDocGenService(configuration)
             .AddHtmlConverterService(configuration)
+            .AddDatabaseService(configuration)
             .AddCoreServices(configuration);
 
             return services;

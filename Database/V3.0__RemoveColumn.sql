@@ -1,0 +1,1 @@
+ALTER TABLE "generationHistory"  DROP COLUMN "documentVersion";
