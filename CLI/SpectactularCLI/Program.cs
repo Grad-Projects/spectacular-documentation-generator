@@ -4,17 +4,19 @@ using System;
 
 public class App
 {
-    private readonly CommandHandler commandHandler = new CommandHandler();
 
-    private async void Run()
+    private static async Task Run()
     {
+
+        CommandHandler commandHandler = new CommandHandler();
+
         Output.PrintWelcomeBanner();
 
         bool shouldContinue = true;
 
         while (shouldContinue)
         {
-            await Output.PrintLoggedInUser();
+            //await Output.PrintLoggedInUser();
 
             Output.PrintCommands();
 
@@ -36,8 +38,8 @@ public class App
         }
     }
 
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
-        new App().Run();
+        await Run();
     }
 }

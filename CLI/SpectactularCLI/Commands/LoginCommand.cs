@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,7 +10,7 @@ namespace SpectactularCLI.Commands
 {
     public class LoginCommand : Command
     {
-        static readonly HttpClient client = Global.Client;
+        static readonly HttpClient client = new();
         string _deviceCode = "";
 
         public LoginCommand() : base("L", "Login")
@@ -23,29 +24,23 @@ namespace SpectactularCLI.Commands
             {
                 { "client_id", Global.githubClientID }
             };
-            var loginRequestBody = new FormUrlEncodedContent(loginRequestDict);
-            var loginURL = "https://github.com/login/device/code";
+            string loginURL = "https://github.com/login/device/code/";
             int interval = 5;
 
             try
             {
-                await Console.Out.WriteLineAsync("Test");
-                var response = await client.PostAsync(loginURL, loginRequestBody);
-                await Console.Out.WriteLineAsync("Test 1");
+                var response = await client.PostAsJsonAsync(loginURL, loginRequestDict);
 
                 var responseDict = QueryStringToDict(await response.Content.ReadAsStringAsync());
                 _deviceCode = responseDict["device_code"];
                 interval = int.Parse(responseDict["interval"]);
                 string userCode = responseDict["user_code"];
                 var verificationURL = DecodeUrlString(responseDict["verification_uri"]);
-                Console.WriteLine($"Please navigate to {verificationURL}\nEnter the following Code: {userCode}");
+                await Console.Out.WriteLineAsync($"Please navigate to {verificationURL}\nEnter the following Code: {userCode}");
             }
             catch (HttpRequestException e)
             {
-
-                await Console.Error.WriteLineAsync("Returned an error in the initial request! Catch me later in the CLI");
-                await Console.Error.WriteLineAsync(e.ToString());
-                return true;
+                throw new Exception("Returned an error in the initial request to setup the OAuth Flow!");
             }
 
             // Begin task to wait for login info
@@ -55,7 +50,6 @@ namespace SpectactularCLI.Commands
                 { "device_code", _deviceCode },
                 { "grant_type", "urn:ietf:params:oauth:grant-type:device_code" }
             };
-            var pollRequestBody = new FormUrlEncodedContent(pollRequestDict);
             var pollURL = "https://github.com/login/oauth/access_token";
             bool verified = false;
             bool expired = false;
@@ -64,7 +58,7 @@ namespace SpectactularCLI.Commands
                 Thread.Sleep((interval + 1) * 1000);
                 try
                 {
-                    var response = await client.PostAsync(pollURL, pollRequestBody);
+                    var response = await client.PostAsJsonAsync(pollURL, pollRequestDict);
 
                     var responseDict = QueryStringToDict(await response.Content.ReadAsStringAsync());
 
@@ -103,7 +97,7 @@ namespace SpectactularCLI.Commands
             return await base.Execute();
         }
 
-        // -------------------------------------------------------------------------------------------------
+        // ---------------------------------- Helper Methods ---------------------------------------------------------------
 
         // https://stackoverflow.com/a/3847593
         private static string DecodeUrlString(string url)
