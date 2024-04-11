@@ -13,7 +13,7 @@ namespace SpectactularCLI.Utilities
 
         public static readonly List<Command> DefaultCommands = new List<Command>
         {
-
+            new LoginCommand()
         };
 
         public static List<Command> Commands = DefaultCommands;

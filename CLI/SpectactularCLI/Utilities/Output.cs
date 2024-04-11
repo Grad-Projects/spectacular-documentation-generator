@@ -25,7 +25,7 @@ namespace SpectactularCLI.Utilities
 
         public static void PrintEnterCommand()
         {
-            Console.Write("");
+            Console.Write("> ");
         }
 
         public static async Task PrintLoggedInUser()

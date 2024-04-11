@@ -6,7 +6,16 @@ using System.Threading.Tasks;
 
 namespace SpectactularCLI.Commands
 {
-    internal class LoginCommand
+    public class LoginCommand : Command
     {
+        public LoginCommand() : base("L", "Login")
+        {
+        }
+
+        public override bool Execute()
+        {
+            Console.WriteLine("Login TODO");
+            return base.Execute();
+        }
     }
 }
