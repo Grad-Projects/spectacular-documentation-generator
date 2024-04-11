@@ -1,4 +1,5 @@
 ﻿using SpectactularCLI.Commands;
+using Microsoft.Extensions.Configuration;
 
 namespace SpectactularCLI.Utilities
 {
@@ -10,6 +11,11 @@ namespace SpectactularCLI.Utilities
         public const string API_DOMAIN = "";
         public static string AccessToken = "";
         public static string User = "";
+        public static HttpClient Client = new();
+        public static IConfigurationRoot config = new ConfigurationBuilder()
+            .AddUserSecrets<App>()
+            .Build();
+        public static string githubClientID = config["github_client_id"];
 
         public static readonly List<Command> DefaultCommands = new List<Command>
         {

@@ -6,7 +6,7 @@ public class App
 {
     private readonly CommandHandler commandHandler = new CommandHandler();
 
-    private void Run()
+    private async void Run()
     {
         Output.PrintWelcomeBanner();
 
@@ -14,7 +14,7 @@ public class App
 
         while (shouldContinue)
         {
-            Output.PrintLoggedInUser();
+            await Output.PrintLoggedInUser();
 
             Output.PrintCommands();
 
@@ -25,11 +25,12 @@ public class App
             string userInput = Console.ReadLine();
             try
             {
-                shouldContinue = commandHandler.GetCommand(userInput).Execute();
+                shouldContinue = await commandHandler.GetCommand(userInput).Execute();
             }
             catch (Exception e)
             {
                 Console.WriteLine("An error occurred...");
+                Console.WriteLine($"Error: {e}");
                 Global.Commands = Global.DefaultCommands;
             }
         }

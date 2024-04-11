@@ -36,7 +36,7 @@ namespace SpectactularCLI.Commands
             return false;
         }
 
-        public virtual bool Execute()
+        public virtual async Task<bool> Execute()
         {
             return true;
         }
