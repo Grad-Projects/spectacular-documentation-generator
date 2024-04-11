@@ -12,9 +12,7 @@ public class OAuth
     public OAuth(HttpClient client)
     {
         this.client = client;
-        //var envClientID = Environment.GetEnvironmentVariable("GithubClientID") ?? throw new Exception("Environment Variable for Github Client ID not set!");
-
-        var envClientID = "Iv1.be664de67499daba";
+        var envClientID = Environment.GetEnvironmentVariable("GithubClientID") ?? throw new Exception("Environment Variable for Github Client ID not set!");
         this.ClientID = envClientID;
     }
 
