@@ -20,10 +20,14 @@ jobs:
       run: dotnet restore
 
     - name: Build
-      run: dotnet build --configuration Release
+      run: |
+        cd CLI/SpectactularCLI
+        dotnet build --configuration Release
 
     - name: Publish
-      run: dotnet publish -c Release -r win-x64 --self-contained true --output ./publish
+      run: |
+        cd CLI/SpectactularCLI
+        dotnet publish -c Release -r win-x64 --self-contained true --output ./publish
 
     - name: Publish Artifacts
       if: success()
@@ -34,5 +38,5 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: cli-app
-        path: ./artifacts
+       name: SpectacularCLI
+       path: ./artifacts/SpectactularCLI.exe
