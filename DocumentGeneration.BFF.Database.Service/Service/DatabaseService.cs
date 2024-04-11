@@ -18,19 +18,20 @@ namespace DocumentGeneration.BFF.Database.Service.Service
 
     public class DatabaseService
     {
-        private readonly string _connectionString;
+        private readonly DatabaseOptions _options;
 
-        public DatabaseService()
+        public DatabaseService(IOptions<DatabaseOptions> options)
         {
-            IConfigurationRoot config = new ConfigurationBuilder()
-            .AddUserSecrets<DatabaseService>()
-            .Build();
-            _connectionString = config["Database:ConnectionString"];
+            _options = options.Value;
+            //IConfigurationRoot config = new ConfigurationBuilder()
+            //.AddUserSecrets<DatabaseService>()
+            //.Build();
+            //_options = config["Database:ConnectionString"];
         }
 
         private NpgsqlConnection GetConnection()
         {
-            return new NpgsqlConnection(_connectionString);
+            return new NpgsqlConnection(_options.ConnectionString);
         }
 
 
