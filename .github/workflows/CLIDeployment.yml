@@ -34,9 +34,10 @@ jobs:
     - name: Publish Artifacts
       if: success()
       run: |
-        mkdir -p artifacts
+        run: |
+        mkdir -p ../artifacts
         cd CLI/SpectactularCLI
-        cp -r publish/* ../artifacts/
+        cp -r publish/* ../../artifacts/
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
