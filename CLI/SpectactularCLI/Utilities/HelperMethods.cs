@@ -55,14 +55,14 @@ namespace SpectactularCLI.Utilities
         }
 
         //converts html string to html file and saves them to a specified path
-        public static void CreateHtmlFiles(List<(string name, string html)> files, string folderPath)
+        public static void CreateHtmlFiles(List<(string name, string html)> files)
         {
             foreach (var file in files)
             {
                 try
                 {
                     string fileName = file.name + ".html";
-                    string filePath = Path.Combine(folderPath, fileName);
+                    string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), fileName);
 
                     // Ensure the directory exists
                     Directory.CreateDirectory(Path.GetDirectoryName(filePath));

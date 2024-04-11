@@ -60,9 +60,10 @@ namespace SpectactularCLI.Commands
                     {
                         verified = true;
                         Global.AccessToken = value;
-                        Global.Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Global.AccessToken}");
+                        Global.Client.DefaultRequestHeaders.Add("Authorization", $"{Global.AccessToken}");
                         Global.Commands.Clear();
                         Global.Commands.Add(new GenerateDocumentsCommand());
+                        Global.Commands.Add(new QuitCommand());
                     }
                     else
                     {

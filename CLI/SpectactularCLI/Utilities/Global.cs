@@ -5,7 +5,7 @@ namespace SpectactularCLI.Utilities
 {
     public static class Global
     {
-        public const string API_DOMAIN = "spectacular-generator.eba-833qa9rw.eu-west-1.elasticbeanstalk.com";
+        public const string API_DOMAIN = "http://spectacular-generator.eba-833qa9rw.eu-west-1.elasticbeanstalk.com";
         public static string AccessToken = "";
         public static string User = "";
         public static int ApiVersion = 1;

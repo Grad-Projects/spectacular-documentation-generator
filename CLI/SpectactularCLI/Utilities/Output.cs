@@ -27,27 +27,5 @@ namespace SpectactularCLI.Utilities
         {
             Console.Write("> ");
         }
-
-        public static async Task PrintLoggedInUser()
-        {
-            try
-            {
-                using (HttpClient client = new HttpClient())
-                {
-                    client.DefaultRequestHeaders.Add("Authorization", Global.AccessToken);
-
-                    HttpResponseMessage response = await client.GetAsync(Global.API_DOMAIN + "api/private/user");
-
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        return;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                // Handle exception
-            }
-        }
     }
 }
