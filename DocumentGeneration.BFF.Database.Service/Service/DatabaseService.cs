@@ -114,6 +114,31 @@ namespace DocumentGeneration.BFF.Database.Service.Service
             }
         }
 
+        public async Task<bool> checkStyle(string styleName)
+        {
+            using (var connection = GetConnection())
+            {
+                try
+                {
+                    await connection.OpenAsync();
+                    using (var command = new NpgsqlCommand("SELECT check_style_exists(@style_name)", connection))
+                    {
+                        command.Parameters.AddWithValue("@style_name", styleName);
+
+                        var result = await command.ExecuteScalarAsync();
+
+                        return (bool)result;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    
+                    Console.WriteLine($"Error querying database: {ex.Message}");
+                    return false;
+                }
+            }
+        }
+
         //checks to see if the user exist in db and if not we add them 
         public async Task checkUserInDB(string userName)
         {

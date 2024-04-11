@@ -17,6 +17,7 @@ namespace DocumentGeneration.BFF.Database.Service
             services.AddScoped<postDocumentToDB>(s => s.GetRequiredService<DatabaseService>().postDocumentToDB);
             services.AddScoped<checkUserInDB>(s => s.GetRequiredService<DatabaseService>().checkUserInDB);
             services.AddScoped<addUserToDb>(s => s.GetRequiredService<DatabaseService>().addUserToDb);
+            services.AddScoped<checkStyle>(s => s.GetRequiredService<DatabaseService>().checkStyle);
             return services;
         }
 

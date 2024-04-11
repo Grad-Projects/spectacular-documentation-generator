@@ -24,7 +24,6 @@ namespace DocumentGeneration.BFF.HtmlConverter.Service.Service
             htmlBuilder.AppendLine("body { font-family: Arial, sans-serif; }");
             htmlBuilder.AppendLine("table { border-collapse: collapse; width: 100%; }");
             htmlBuilder.AppendLine("th, td { border: 1px solid #dddddd; text-align: left; padding: 8px; }");
-            htmlBuilder.AppendLine("th { background-color: #f2f2f2; }");
             htmlBuilder.AppendLine("</style>");
             htmlBuilder.AppendLine("</head>");
             htmlBuilder.AppendLine("<body>");
