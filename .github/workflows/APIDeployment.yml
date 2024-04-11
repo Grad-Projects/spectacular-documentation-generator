@@ -20,6 +20,8 @@ jobs:
         dotnet-version: '8.x'
 
     - name: Build API
+      env:
+        Database:ConnectionString: ${{ secrets.DB_CONNECTION_STRING }}
       run: |
         cd Api
         dotnet restore Api.sln
@@ -51,5 +53,5 @@ jobs:
         region: 'eu-west-1'
         application_name: spectacular-generator-DotNetCSharpApplication-PBYS6X9YJ7MR
         environment_name: spectacular-generator
-        version_label: v2
+        version_label: v4
         deployment_package: Api/publish.zip

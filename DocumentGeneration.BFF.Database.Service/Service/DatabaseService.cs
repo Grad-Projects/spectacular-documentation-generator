@@ -11,23 +11,26 @@ using Microsoft.Extensions.Options;
 using Npgsql;
 using System.Data;
 using NpgsqlTypes;
+using Microsoft.Extensions.Configuration;
 
 namespace DocumentGeneration.BFF.Database.Service.Service
 {
 
     public class DatabaseService
     {
-        private readonly DatabaseOptions _options;
+        private readonly string _connectionString;
 
-        public DatabaseService(IOptions<DatabaseOptions> options)
+        public DatabaseService()
         {
-
-            _options = options.Value;
+            IConfigurationRoot config = new ConfigurationBuilder()
+            .AddUserSecrets<DatabaseService>()
+            .Build();
+            _connectionString = config["Database:ConnectionString"];
         }
 
         private NpgsqlConnection GetConnection()
         {
-            return new NpgsqlConnection(_options.ConnectionString);
+            return new NpgsqlConnection(_connectionString);
         }
 
 
