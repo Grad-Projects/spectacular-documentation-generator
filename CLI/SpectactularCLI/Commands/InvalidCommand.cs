@@ -12,7 +12,7 @@ namespace SpectactularCLI.Commands
         {
         }
 
-        public override bool Execute()
+        public override Task<bool> Execute()
         {
             Console.WriteLine(GetDescription());
             return base.Execute();

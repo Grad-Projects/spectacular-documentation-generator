@@ -4,17 +4,19 @@ using System;
 
 public class App
 {
-    private readonly CommandHandler commandHandler = new CommandHandler();
 
-    private void Run()
+    private static async Task Run()
     {
+
+        CommandHandler commandHandler = new CommandHandler();
+
         Output.PrintWelcomeBanner();
 
         bool shouldContinue = true;
 
         while (shouldContinue)
         {
-            Output.PrintLoggedInUser();
+            //await Output.PrintLoggedInUser();
 
             Output.PrintCommands();
 
@@ -25,18 +27,19 @@ public class App
             string userInput = Console.ReadLine();
             try
             {
-                shouldContinue = commandHandler.GetCommand(userInput).Execute();
+                shouldContinue = await commandHandler.GetCommand(userInput).Execute();
             }
             catch (Exception e)
             {
                 Console.WriteLine("An error occurred...");
+                Console.WriteLine($"Error: {e}");
                 Global.Commands = Global.DefaultCommands;
             }
         }
     }
 
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
-        new App().Run();
+        await Run();
     }
 }
