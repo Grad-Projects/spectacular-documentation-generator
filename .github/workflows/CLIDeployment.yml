@@ -18,18 +18,18 @@ jobs:
 
     - name: Restore Dependencies
       run: |
-        ls
-        dotnet restore SpectactularCLI.sln
+        cd CLI/SpectactularCLI
+        sudo dotnet restore SpectactularCLI.sln
 
     - name: Build
       run: |
         cd CLI/SpectactularCLI
-        dotnet build --configuration Release
+        sudo dotnet build --configuration Release
 
     - name: Publish
       run: |
         cd CLI/SpectactularCLI
-        dotnet publish -c Release -r win-x64 --self-contained true --output ./publish
+        sudo dotnet publish -c Release -r win-x64 --self-contained true --output ./publish
 
     - name: Publish Artifacts
       if: success()
