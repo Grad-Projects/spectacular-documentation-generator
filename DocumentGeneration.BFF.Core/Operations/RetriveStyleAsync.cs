@@ -12,4 +12,5 @@ namespace DocumentGeneration.BFF.Core.Operations
     //public delegate Task CheckOrAddUser(string userName);
     public delegate Task checkUserInDB(string userName);
     public delegate Task addUserToDb(string userName);
+    public delegate Task<bool> checkStyle(string styleName);
 }
