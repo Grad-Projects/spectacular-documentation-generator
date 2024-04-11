@@ -17,7 +17,9 @@ jobs:
         dotnet-version: '8.x' # Change this to your desired .NET version
 
     - name: Restore Dependencies
-      run: dotnet restore SpectactularCLI.sln
+      run: |
+        ls
+        dotnet restore SpectactularCLI.sln
 
     - name: Build
       run: |
