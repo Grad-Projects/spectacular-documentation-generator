@@ -1,0 +1,38 @@
+name: Deploy CLI Application
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '8.x' # Change this to your desired .NET version
+
+    - name: Restore Dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --configuration Release
+
+    - name: Publish
+      run: dotnet publish -c Release -r win-x64 --self-contained true --output ./publish
+
+    - name: Publish Artifacts
+      if: success()
+      run: |
+        mkdir -p artifacts
+        cp -r publish/* artifacts/
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: cli-app
+        path: ./artifacts
