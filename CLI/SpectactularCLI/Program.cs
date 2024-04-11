@@ -31,8 +31,6 @@ public class App
             }
             catch (Exception e)
             {
-                Console.WriteLine("An error occurred...");
-                Console.WriteLine($"Error: {e}");
                 Global.Commands = Global.DefaultCommands;
             }
         }
