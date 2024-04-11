@@ -25,7 +25,7 @@ namespace SpectactularCLI.Commands
                 while (true)
                 {
                     Console.Write("Enter path to file you would like to document (Please ensure it is a .cs file, leave blank to stop): ");
-                    string inputFilePath = Console.ReadLine();
+                    string inputFilePath = Console.ReadLine().Trim();
                     if (!String.IsNullOrEmpty(inputFilePath))
                     {
                         userFilePaths.Add(inputFilePath);
@@ -94,7 +94,7 @@ namespace SpectactularCLI.Commands
 
                 Console.Write("> ");
 
-                string input = Console.ReadLine();
+                string input = Console.ReadLine().Trim();
 
                 if (int.TryParse(input, out choice) && choice >= 0 && choice <= Global.StyleList.Count)
                 {

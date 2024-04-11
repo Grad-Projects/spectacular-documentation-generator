@@ -24,7 +24,7 @@ public class App
 
             Output.PrintEnterCommand();
 
-            string userInput = Console.ReadLine();
+            string userInput = Console.ReadLine().Trim();
             try
             {
                 shouldContinue = await commandHandler.GetCommand(userInput).Execute();
