@@ -10,7 +10,7 @@ namespace Api.Endpoints
         public static IEndpointRouteBuilder AddDocumentEndpoint(this IEndpointRouteBuilder endpoints)
         {
 
-            endpoints.MapGet("generate/documentation", (
+            endpoints.MapPut("generate/documentation", (
                    [FromBody] List<string> document,
                    [FromHeader] string Username,
                    [FromQuery] string style,
