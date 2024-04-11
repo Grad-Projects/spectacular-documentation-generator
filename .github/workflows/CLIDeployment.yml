@@ -44,7 +44,7 @@ jobs:
         files: |
           CLI/SpectactularCLI/publish/SpectactularCLI.exe
         tag_name: v0 # Specify release tag before running
-        release_name: Release v0.0.0 # Specify release name before running
+        name: Release v0.0.0 # Specify release name before running
         body: |
           Test Release
 
