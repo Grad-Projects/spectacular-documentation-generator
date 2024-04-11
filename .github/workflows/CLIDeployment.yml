@@ -1,0 +1,54 @@
+name: Deploy CLI Application
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '8.x' # Change this to your desired .NET version
+
+    - name: Restore Dependencies
+      run: |
+        cd CLI/SpectactularCLI
+        sudo dotnet restore SpectactularCLI.sln
+
+    - name: Build
+      run: |
+        cd CLI/SpectactularCLI
+        sudo dotnet build --configuration Release
+
+    - name: Publish
+      run: |
+        cd CLI/SpectactularCLI
+        sudo dotnet publish -c Release -r win-x64 --self-contained true --output ./publish
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: SpectacularCLI
+        path: CLI/SpectactularCLI/publish/SpectactularCLI.exe
+
+    - name: Create Release
+      id: create_release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          CLI/SpectactularCLI/publish/SpectactularCLI.exe
+        tag_name: v0 # Specify release tag before running
+        name: Release v0.0.0 # Specify release name before running
+        body: |
+          Test Release
+
+    - name: Publish Release
+      if: success()
+      run: |
+        echo "Published release ${{ steps.create_release.outputs.id }}"

@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - '.github/workflows/APIDeployment.yml'
+  workflow_dispatch:
 
 jobs:
   deploy:
