@@ -10,10 +10,10 @@ namespace Api.Endpoints
         {
 
             endpoints.MapPut("checkUser", (
-                   [FromQuery] string userName,
+                   [FromHeader] string Username,
                    [FromServices] IDatabaseQueries _checkuser
                     )
-               => _checkuser.checkUser(userName)
+               => _checkuser.checkUser(Username)
             )
            .Produces(StatusCodes.Status200OK)
            .Produces(StatusCodes.Status500InternalServerError)
