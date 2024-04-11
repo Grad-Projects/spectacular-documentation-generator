@@ -31,8 +31,24 @@ jobs:
         cd CLI/SpectactularCLI
         sudo dotnet publish -c Release -r win-x64 --self-contained true --output ./publish
 
-    - name: Upload artifacts
+    - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
-       name: SpectacularCLI
-       path: CLI/SpectactularCLI/publish/SpectactularCLI.exe
+        name: SpectacularCLI
+        path: CLI/SpectactularCLI/publish/SpectactularCLI.exe
+
+    - name: Create Release
+      id: create_release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          CLI/SpectactularCLI/publish/SpectactularCLI.exe
+        tag_name: v0 # Specify release tag before running
+        release_name: Release v0.0.0 # Specify release name before running
+        body: |
+          Test Release
+
+    - name: Publish Release
+      if: success()
+      run: |
+        echo "Published release ${{ steps.create_release.outputs.id }}"
