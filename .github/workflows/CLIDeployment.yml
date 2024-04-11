@@ -34,7 +34,7 @@ jobs:
     - name: Zip Publish Folder
       run: |
         cd CLI/SpectactularCLI/publish
-        zip -r SpectacularCLI.zip .
+        sudo zip -r SpectacularCLI.zip .
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
