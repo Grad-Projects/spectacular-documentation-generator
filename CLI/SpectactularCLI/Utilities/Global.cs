@@ -12,9 +12,9 @@ namespace SpectactularCLI.Utilities
         public static string User = "";
 
         public static readonly List<Command> DefaultCommands = new List<Command>
-    {
+        {
 
-    };
+        };
 
         public static List<Command> Commands = DefaultCommands;
     }
