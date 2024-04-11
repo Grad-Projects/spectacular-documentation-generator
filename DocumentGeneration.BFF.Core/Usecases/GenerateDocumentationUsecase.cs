@@ -41,7 +41,7 @@ namespace DocumentGeneration.BFF.Core.Usecases
            return html;
         }
 
-        public async Task<List<(string, string)>> GenDocumentation(List<string> files, string styleName, string userName)
+        public async Task<Dictionary<string, string>> GenDocumentation(List<string> files, string styleName, string userName)
         {
             var style = await checkIfStyleExitsInDb(styleName);
             List<documentBaseClass> fileInfo = new List<documentBaseClass>();
@@ -62,7 +62,7 @@ namespace DocumentGeneration.BFF.Core.Usecases
             }
 
 
-            return htmlForFiles;
+            return htmlForFiles.ToDictionary();
         }
 
 
