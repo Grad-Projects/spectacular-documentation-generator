@@ -6,7 +6,9 @@
 - Jenna Dunford 👩🏻‍💻
 
 This spectacular documentation generator was created for a C# Level-Up Project.
+
 This tool generates documentation for c# files. 
+
 (please note: that this is a simple documentation generator and if you use a file with multiple classes it will only document the first - follow good proactises, one class per file)
 
 This project includes two frontend applications:
