@@ -11,9 +11,9 @@ This project includes two frontend applications:
 
 ## CLI
 
-The CLI can be downloaded from here:
+Download the CLI exe from releases: 
 
-[Put link to CLI download here](https://bitly.com/98K8eH)
+[releases](https://github.com/Grad-Projects/spectacular-documentation-generator/releases)
 
 ## GitHub Action
 
